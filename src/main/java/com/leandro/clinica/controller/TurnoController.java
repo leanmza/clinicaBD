@@ -22,6 +22,16 @@ public class TurnoController {
         return ResponseEntity.ok(turnoService.getTurnos());
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<TurnoDTO> getTurnoById(@PathVariable long id){
+        return ResponseEntity.ok(turnoService.getTurnoById(id));
+    }
+
+    @GetMapping("/pendientes")
+    public ResponseEntity<List<TurnoDTO>> getTurnosPendientes(){
+        return ResponseEntity.ok(turnoService.getTurnosPendientes());
+    }
+
     @PostMapping("/asignar")
     public ResponseEntity<Turno> asignarTurno(@RequestBody Turno turno) {
          Turno turnoAsignado = turnoService.asignarTurno(turno);

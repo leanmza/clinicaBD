@@ -10,4 +10,8 @@ public interface ITurnoService {
     Turno asignarTurno(Turno turno);
 
     List<TurnoDTO> getTurnos();
+
+    TurnoDTO getTurnoById(long id);
+
+    List<TurnoDTO> getTurnosPendientes();
 }
