@@ -18,10 +18,7 @@ import java.util.Optional;
 
 @Service
 public class TurnoService implements ITurnoService {
-    @Override
-    public List<TurnoDTO> getTurnosPendientes() {
-        return turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
-    }
+
 
     @Autowired
     private ITurnoRepository turnoRepo;
@@ -31,6 +28,22 @@ public class TurnoService implements ITurnoService {
 
     @Autowired
     private DoctorService doctorService;
+
+
+    @Override
+    public Object getTurnosByNombreDoctor(String nombre, String apellido) {
+        return turnoRepo.findTurnoByNombreDoctor(nombre, apellido).stream().map(this::mapearDTO).toList();
+    }
+
+    @Override
+    public Object getTurnosByNombrePaciente(String nombre, String apellido) {
+        return turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
+    }
+
+    @Override
+    public List<TurnoDTO> getTurnosPendientes() {
+        return turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+    }
 
     @Override
     public Turno asignarTurno(Turno turno) {

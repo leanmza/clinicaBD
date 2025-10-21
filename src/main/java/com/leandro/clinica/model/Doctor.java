@@ -21,7 +21,10 @@ public class Doctor {
     private String apellido;
     private String email;
     private String celular;
-    private String especialidad;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "especialidad_id",nullable = false)
+    private Especialidad especialidad;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Turno> listaTurnos;

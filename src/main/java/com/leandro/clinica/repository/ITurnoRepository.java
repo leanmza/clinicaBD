@@ -11,9 +11,30 @@ import java.util.List;
 
 public interface ITurnoRepository extends JpaRepository<Turno, Long> {
 
-    @Query("SELECT MAX(t.fechaHora) FROM Turno t WHERE t.doctor = :doctor")
+    @Query("SELECT MAX(t.fechaHora) " +
+            "FROM Turno t " +
+            "WHERE t.doctor = :doctor")
     LocalDateTime findUltimaFechaTurnoByDoctor(@Param("doctor") Doctor doctor);
 
-    @Query("SELECT t FROM Turno t WHERE t.fechaHora >= :fechaActual")
+    @Query("SELECT t " +
+            "FROM Turno t " +
+            "WHERE t.fechaHora >= :fechaActual " +
+            "ORDER BY t.fechaHora ASC")
     List<Turno> findTurnosDesdeFecha(@Param("fechaActual") LocalDateTime fechaActual);
+
+    @Query("SELECT t " +
+            "FROM Turno t " +
+            "LEFT JOIN  t.doctor d " +
+            "WHERE d.nombre = :nombreDoctor " +
+            "AND d.apellido = :apellidoDoctor")
+    List<Turno> findTurnoByNombreDoctor(@Param("nombreDoctor") String nombreDoctor,
+                                        @Param("apellidoDoctor") String apellidoDoctor);
+
+    @Query("SELECT t " +
+            "FROM Turno t " +
+            "LEFT JOIN  t.paciente p " +
+            "WHERE p.nombre = :nombrePaciente " +
+            "AND p.apellido = :apellidoPaciente")
+    List<Turno> findTurnoByNombrePaciente(@Param("nombrePaciente") String nombrePaciente,
+                                        @Param("apellidoPaciente") String apellidoPaciente);
 }

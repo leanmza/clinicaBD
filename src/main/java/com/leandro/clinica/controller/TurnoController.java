@@ -3,8 +3,8 @@ package com.leandro.clinica.controller;
 import com.leandro.clinica.DTO.TurnoDTO;
 import com.leandro.clinica.model.Turno;
 import com.leandro.clinica.service.ITurnoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +30,18 @@ public class TurnoController {
     @GetMapping("/pendientes")
     public ResponseEntity<List<TurnoDTO>> getTurnosPendientes(){
         return ResponseEntity.ok(turnoService.getTurnosPendientes());
+    }
+
+    @GetMapping("/doctor")
+    public ResponseEntity<?> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
+                                                              @RequestParam @Valid String apellido) {
+        return ResponseEntity.ok(turnoService.getTurnosByNombreDoctor(nombre, apellido));
+    }
+
+    @GetMapping("/paciente")
+    public ResponseEntity<?> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
+                                                              @RequestParam @Valid String apellido) {
+        return ResponseEntity.ok(turnoService.getTurnosByNombrePaciente(nombre, apellido));
     }
 
     @PostMapping("/asignar")
