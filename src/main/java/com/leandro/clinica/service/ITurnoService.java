@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ITurnoService {
-    Turno asignarTurno(Turno turno);
+    TurnoDTO asignarTurno(Turno turno);
 
     List<TurnoDTO> getTurnos();
 
@@ -21,4 +21,6 @@ public interface ITurnoService {
     List<TurnoDTO> getTurnosByNombrePaciente(String nombre, String apellido);
 
     void deleteTurno(long id);
+
+    List<TurnoDTO> getTurnosCancelados();
 }

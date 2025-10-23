@@ -32,6 +32,12 @@ public class TurnoController {
         return turnoService.getTurnosPendientes();
     }
 
+    @GetMapping("/cancelados")
+    public List<TurnoDTO> getTurnosCancelados(){
+        return turnoService.getTurnosCancelados();
+
+    }
+
     @GetMapping("/doctor")
     public List<TurnoDTO> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
                                                               @RequestParam @Valid String apellido) {
@@ -45,8 +51,8 @@ public class TurnoController {
     }
 
     @PostMapping("/asignar")
-    public Turno asignarTurno(@RequestBody Turno turno) {
-         Turno turnoAsignado = turnoService.asignarTurno(turno);
+    public TurnoDTO asignarTurno(@RequestBody Turno turno) {
+         TurnoDTO turnoAsignado = turnoService.asignarTurno(turno);
         return turnoAsignado;
     }
 
