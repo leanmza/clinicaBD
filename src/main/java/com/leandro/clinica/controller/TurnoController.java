@@ -49,4 +49,10 @@ public class TurnoController {
          Turno turnoAsignado = turnoService.asignarTurno(turno);
         return ResponseEntity.ok(turnoAsignado);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTurno(@PathVariable long id){
+        turnoService.deleteTurno(id);
+        return ResponseEntity.ok("Turno cancelado");
+    }
 }

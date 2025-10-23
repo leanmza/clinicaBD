@@ -19,4 +19,6 @@ public interface ITurnoService {
     Object getTurnosByNombreDoctor(String nombre, String apellido);
 
     Object getTurnosByNombrePaciente(String nombre, String apellido);
+
+    void deleteTurno(long id);
 }

@@ -49,15 +49,15 @@ public class TurnoService implements ITurnoService {
     public Turno asignarTurno(Turno turno) {
         Doctor doctor = turno.getDoctor();
 
-        // Buscar la fecha del último turno del doctor
+        // Busco la fecha del último turno del doctor
         LocalDateTime ultimaFecha = turnoRepo.findUltimaFechaTurnoByDoctor(doctor);
 
-        // Si no hay turnos, empezar desde la próxima semana
+        // Si ultimaFecha es null, busco el primer turno libre de la proximaSemana;
         if (ultimaFecha == null) {
             ultimaFecha = primerTurnoDeLaProximaSemana();
         }
 
-        // Calcular siguiente horario disponible
+        // Busco el proximo horario disponible
         LocalDateTime siguiente = siguienteTurno(ultimaFecha);
 
         Turno nuevo = new Turno();
@@ -67,6 +67,25 @@ public class TurnoService implements ITurnoService {
         nuevo.setOcupado(true);
 
         return turnoRepo.save(nuevo);
+    }
+
+    @Override
+    public List<TurnoDTO> getTurnos() {
+        return turnoRepo.findAll().stream().map(this::mapearDTO).toList();
+    }
+
+    @Override
+    public TurnoDTO getTurnoById(long id) {
+
+        return turnoRepo.findById(id).map(this::mapearDTO).orElseGet(null);
+    }
+
+    @Override
+    public void deleteTurno(long id) {
+        Turno turno = turnoRepo.findById(id).orElseGet(null);
+        turno.setOcupado(false);
+        turnoRepo.save(turno);
+
     }
 
     private LocalDateTime primerTurnoDeLaProximaSemana() {
@@ -95,26 +114,15 @@ public class TurnoService implements ITurnoService {
         return siguiente;
     }
 
-    @Override
-    public List<TurnoDTO> getTurnos() {
-        return turnoRepo.findAll().stream().map(this::mapearDTO).toList();
-    }
-
-    @Override
-    public TurnoDTO getTurnoById(long id) {
-
-        return turnoRepo.findById(id).map(this::mapearDTO).orElseGet(null);
-    }
-
-
-
     private TurnoDTO mapearDTO(Turno turno){
         TurnoDTO turnoDTO = new TurnoDTO();
 
         turnoDTO.setId(turno.getId());
         turnoDTO.setPaciente(pacienteService.getPacienteById(turno.getPaciente().getId()));
         turnoDTO.setDoctor(doctorService.getDoctorById(turno.getDoctor().getId()));
-        turnoDTO.setFechaHora(turno.getFechaHora());
+        turnoDTO.setFecha(turno.getFechaHora().toLocalDate());
+        turnoDTO.setHora(turno.getFechaHora().toLocalTime());
+        turnoDTO.setOcupado(turno.isOcupado());
         return turnoDTO;
 
 

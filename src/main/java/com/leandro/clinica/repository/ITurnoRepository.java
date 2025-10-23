@@ -24,6 +24,14 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
 
     @Query("SELECT t " +
             "FROM Turno t " +
+            "WHERE t.fechaHora >= :fechaActual " +
+            "AND t.ocupado = :ocupado " +
+            "ORDER BY t.fechaHora ASC")
+    List<Turno> findTurnosCanceladosDesdeFecha(@Param("fechaActual") LocalDateTime fechaActual,
+                                               @Param("ocupado") boolean ocupado);
+
+    @Query("SELECT t " +
+            "FROM Turno t " +
             "LEFT JOIN  t.doctor d " +
             "WHERE d.nombre = :nombreDoctor " +
             "AND d.apellido = :apellidoDoctor")
