@@ -18,41 +18,41 @@ public class TurnoController {
     private ITurnoService turnoService;
 
     @GetMapping
-    public ResponseEntity<List<TurnoDTO>> getTurnos(){
-        return ResponseEntity.ok(turnoService.getTurnos());
+    public List<TurnoDTO> getTurnos(){
+        return turnoService.getTurnos();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TurnoDTO> getTurnoById(@PathVariable long id){
-        return ResponseEntity.ok(turnoService.getTurnoById(id));
+    public TurnoDTO getTurnoById(@PathVariable long id){
+        return turnoService.getTurnoById(id);
     }
 
     @GetMapping("/pendientes")
-    public ResponseEntity<List<TurnoDTO>> getTurnosPendientes(){
-        return ResponseEntity.ok(turnoService.getTurnosPendientes());
+    public List<TurnoDTO> getTurnosPendientes(){
+        return turnoService.getTurnosPendientes();
     }
 
     @GetMapping("/doctor")
-    public ResponseEntity<?> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
+    public List<TurnoDTO> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
                                                               @RequestParam @Valid String apellido) {
-        return ResponseEntity.ok(turnoService.getTurnosByNombreDoctor(nombre, apellido));
+        return turnoService.getTurnosByNombreDoctor(nombre, apellido);
     }
 
     @GetMapping("/paciente")
-    public ResponseEntity<?> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
+    public List<TurnoDTO> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
                                                               @RequestParam @Valid String apellido) {
-        return ResponseEntity.ok(turnoService.getTurnosByNombrePaciente(nombre, apellido));
+        return turnoService.getTurnosByNombrePaciente(nombre, apellido);
     }
 
     @PostMapping("/asignar")
-    public ResponseEntity<Turno> asignarTurno(@RequestBody Turno turno) {
+    public Turno asignarTurno(@RequestBody Turno turno) {
          Turno turnoAsignado = turnoService.asignarTurno(turno);
-        return ResponseEntity.ok(turnoAsignado);
+        return turnoAsignado;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTurno(@PathVariable long id){
+    public String deleteTurno(@PathVariable long id){
         turnoService.deleteTurno(id);
-        return ResponseEntity.ok("Turno cancelado");
+        return "Turno cancelado";
     }
 }

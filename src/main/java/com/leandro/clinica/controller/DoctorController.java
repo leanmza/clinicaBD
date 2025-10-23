@@ -16,30 +16,30 @@ public class DoctorController {
     private IDoctorService doctorService;
 
     @GetMapping
-    public ResponseEntity<List<DoctorDTO>> getDoctores(){
-        return ResponseEntity.ok(doctorService.getDoctores());
+    public List<DoctorDTO> getDoctores(){
+        return doctorService.getDoctores();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable long id){
-        return ResponseEntity.ok(doctorService.getDoctorById(id));
+    public DoctorDTO getDoctorById(@PathVariable long id){
+        return doctorService.getDoctorById(id);
     }
 
     @PostMapping
-    public ResponseEntity<String> createDoctor(@RequestBody Doctor doctor){
+    public String createDoctor(@RequestBody Doctor doctor){
         doctorService.createDoctor(doctor);
-        return ResponseEntity.ok("Doctor creado correctamente");
+        return "Doctor creado correctamente";
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDoctor(@PathVariable long id){
+    public String deleteDoctor(@PathVariable long id){
         doctorService.deleteDoctor(id);
-        return ResponseEntity.ok("Doctor borrado correctamente");
+        return "Doctor borrado correctamente";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Doctor> updateDoctor(@PathVariable long id, @RequestBody Doctor doctor){
+    public Doctor updateDoctor(@PathVariable long id, @RequestBody Doctor doctor){
         doctorService.updateDoctor(id, doctor);
-        return ResponseEntity.ok(doctor);
+        return doctor;
     }
 }

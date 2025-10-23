@@ -31,12 +31,12 @@ public class TurnoService implements ITurnoService {
 
 
     @Override
-    public Object getTurnosByNombreDoctor(String nombre, String apellido) {
+    public List<TurnoDTO> getTurnosByNombreDoctor(String nombre, String apellido) {
         return turnoRepo.findTurnoByNombreDoctor(nombre, apellido).stream().map(this::mapearDTO).toList();
     }
 
     @Override
-    public Object getTurnosByNombrePaciente(String nombre, String apellido) {
+    public List<TurnoDTO> getTurnosByNombrePaciente(String nombre, String apellido) {
         return turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
     }
 

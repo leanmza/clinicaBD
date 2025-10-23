@@ -18,31 +18,31 @@ public class PacienteController {
     private IPacienteService pacienteService;
 
     @GetMapping
-    public ResponseEntity<List<PacienteDTO>> getPacientes() {
-        return ResponseEntity.ok(pacienteService.getPacientes());
+    public List<PacienteDTO> getPacientes() {
+        return pacienteService.getPacientes();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDTO> getPacienteById(@PathVariable long id) {
-        return ResponseEntity.ok(pacienteService.getPacienteById(id));
+    public PacienteDTO getPacienteById(@PathVariable long id) {
+        return pacienteService.getPacienteById(id);
     }
 
     @PostMapping
-    public ResponseEntity<String> createPaciente(@RequestBody Paciente paciente) {
+    public String createPaciente(@RequestBody Paciente paciente) {
         pacienteService.createPaciente(paciente);
-        return ResponseEntity.ok("Paciente creado correctamente");
+        return "Paciente creado correctamente";
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePaciente(@PathVariable long id) {
+    public String deletePaciente(@PathVariable long id) {
         pacienteService.deletePaciente(id);
-        return ResponseEntity.ok("Paciente eliminado");
+        return "Paciente eliminado";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> updatePaciente(@PathVariable long id, @RequestBody Paciente paciente) {
+    public Paciente updatePaciente(@PathVariable long id, @RequestBody Paciente paciente) {
         pacienteService.updatePaciente(id, paciente);
-        return ResponseEntity.ok(paciente);
+        return paciente;
     }
 
 }
