@@ -23,4 +23,6 @@ public interface ITurnoService {
     void deleteTurno(long id);
 
     List<TurnoDTO> getTurnosCancelados();
+
+    TurnoDTO reservarTurno(Turno turno);
 }

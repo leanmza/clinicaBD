@@ -19,4 +19,5 @@ public class TurnoDTO {
         private boolean ocupado;
         private PacienteDTO paciente;
         private DoctorDTO doctor;
+        
 }

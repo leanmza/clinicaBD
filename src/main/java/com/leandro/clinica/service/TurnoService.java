@@ -2,7 +2,6 @@ package com.leandro.clinica.service;
 
 import com.leandro.clinica.DTO.TurnoDTO;
 import com.leandro.clinica.model.Doctor;
-import com.leandro.clinica.model.Paciente;
 import com.leandro.clinica.model.Turno;
 import com.leandro.clinica.repository.ITurnoRepository;
 
@@ -13,9 +12,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class TurnoService implements ITurnoService {
@@ -46,14 +45,15 @@ public class TurnoService implements ITurnoService {
         return turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
     }
 
+    //Asigna automáticamente los turnos, uno detrás de otro, excepto que haya un turno previo cancelado
     @Override
     public TurnoDTO asignarTurno(Turno turno) {
-        Doctor doctor = turno.getDoctor();
-
+        // Obtengo la fecha y hora actual
         LocalDateTime fechaActual = LocalDateTime.now();
 
-        //Primero reviso si hay turnos cancelados para el doctor
+        //Primero busco el primer turno sin ocupar del doctor, puede ser cancelado o libre
         List<Turno> turnosCancelados = turnoRepo.findTurnosCanceladosPorDoctorDesdeFecha(turno.getDoctor(), fechaActual);
+
 
         //Si hay turnos cancelados, le asigno a turno, que viene por parámetro con el doctor y el paciente,  el id y fecha/hora
         // del primer turno cancelado de la lista de turnos cancelados
@@ -66,7 +66,7 @@ public class TurnoService implements ITurnoService {
         } else {
 
             // Busco la fecha del último turno del doctor
-            LocalDateTime ultimaFecha = turnoRepo.findUltimaFechaTurnoByDoctor(doctor);
+            LocalDateTime ultimaFecha = turnoRepo.findUltimaFechaTurnoByDoctor(turno.getDoctor());
 
             // Si ultimaFecha es null, busco el primer horario libre del día siguiente;
             if (ultimaFecha == null) {
@@ -76,13 +76,10 @@ public class TurnoService implements ITurnoService {
             // Busco el proximo horario disponible
             LocalDateTime siguiente = siguienteTurno(ultimaFecha);
 
-            Turno turnoNuevo = new Turno();
-            turnoNuevo.setDoctor(doctor);
-            turnoNuevo.setPaciente(turno.getPaciente());
-            turnoNuevo.setFechaHora(siguiente);
-            turnoNuevo.setOcupado(true);
-            turnoRepo.save(turnoNuevo);
-            return mapearDTO(turnoNuevo);
+            turno.setFechaHora(siguiente);
+            turno.setOcupado(true);
+            turnoRepo.save(turno);
+            return mapearDTO(turno);
         }
     }
 
@@ -107,6 +104,31 @@ public class TurnoService implements ITurnoService {
     @Override
     public List<TurnoDTO> getTurnosCancelados() {
         return turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+    }
+
+    @Override
+    public TurnoDTO reservarTurno(Turno turno) {
+        Optional<Turno> estaDisponible = turnoRepo.findTurnoDisponiblePorDoctoryFecha(turno.getDoctor(), turno.getFechaHora());
+
+        // Si estaDisponible es null, seteo ocupado true al turno que viene por parámetro y lo guardo
+        if (estaDisponible.isEmpty()) {
+
+            turno.setOcupado(true);
+            turnoRepo.save(turno);
+            return mapearDTO(turno);
+        }
+
+        // Si encuetra un turno que ya existe con el doctor y fecha pasados, reviso si ocupado es esta false,
+        // si lo está, le asigno el id del turno existente y cambio ocupado a true
+        if (estaDisponible.isPresent() && !estaDisponible.get().isOcupado()) {
+            turno.setId(estaDisponible.get().getId());
+            turno.setOcupado(true);
+            turnoRepo.save(turno);
+            return mapearDTO(turno);
+        } else {
+            throw new RuntimeException("La fecha y hora elegidas no están disponibles");
+        }
+
     }
 
     private LocalDateTime primerTurnoDelProximoDía() {

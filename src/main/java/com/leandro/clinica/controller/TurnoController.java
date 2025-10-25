@@ -56,6 +56,16 @@ public class TurnoController {
         return turnoAsignado;
     }
 
+    @PostMapping("/reservar")
+    public Object reservarTurno(@RequestBody Turno turno) {
+        try {
+            return turnoService.reservarTurno(turno);
+        } catch (RuntimeException e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public String deleteTurno(@PathVariable long id){
         turnoService.deleteTurno(id);

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ITurnoRepository extends JpaRepository<Turno, Long> {
 
@@ -43,7 +44,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
             "FROM Turno t " +
             "LEFT JOIN  t.doctor d " +
             "WHERE d.nombre = :nombreDoctor " +
-            "AND d.apellido = :apellidoDoctor")
+            "AND d.apellido = :apellidoDoctor " +
+            "ORDER BY t.fechaHora ASC")
     List<Turno> findTurnoByNombreDoctor(@Param("nombreDoctor") String nombreDoctor,
                                         @Param("apellidoDoctor") String apellidoDoctor);
 
@@ -52,7 +54,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
             "FROM Turno t " +
             "LEFT JOIN  t.paciente p " +
             "WHERE p.nombre = :nombrePaciente " +
-            "AND p.apellido = :apellidoPaciente")
+            "AND p.apellido = :apellidoPaciente " +
+            "ORDER BY t.fechaHora ASC")
     List<Turno> findTurnoByNombrePaciente(@Param("nombrePaciente") String nombrePaciente,
                                         @Param("apellidoPaciente") String apellidoPaciente);
 
@@ -65,5 +68,13 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
             "ORDER BY t.fechaHora ASC")
     List<Turno> findTurnosCanceladosPorDoctorDesdeFecha(@Param("doctor") Doctor doctor,
                                                         @Param("fechaActual") LocalDateTime fechaActual);
+
+    @Query("SELECT t " +
+            "FROM Turno t " +
+            "WHERE t.doctor = :doctor " +
+            "AND t.fechaHora = :fechaElegida")
+    Optional<Turno> findTurnoDisponiblePorDoctoryFecha(@Param("doctor") Doctor doctor,
+                                                        @Param("fechaElegida") LocalDateTime fechaElegida);
+
 
 }
