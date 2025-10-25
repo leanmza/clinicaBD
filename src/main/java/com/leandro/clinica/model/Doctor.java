@@ -14,7 +14,7 @@ import java.util.List;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "doctor_id")
+    @Column(name = "doctor_id", unique = true)
     private long id;
 
     private String nombre;

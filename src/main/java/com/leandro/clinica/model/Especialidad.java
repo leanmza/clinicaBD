@@ -16,7 +16,7 @@ public class Especialidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "especialidad_id")
+    @Column(name = "especialidad_id", unique = true)
     private long id;
 
     @Column(name ="nombre_especialidad",unique = true)
