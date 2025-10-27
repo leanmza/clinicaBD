@@ -20,12 +20,22 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<DoctorDTO> getDoctores() {
-        return doctorRepo.findAll().stream().map(this::mapearDTO).toList();
+        List<DoctorDTO> listaDoctores = doctorRepo.findAll().stream().map(this::mapearDTO).toList();
+
+        if(listaDoctores.isEmpty()){
+            return List.of(llenarMensajeError("No hay doctores registrados"));
+        }
+        return listaDoctores;
     }
 
     @Override
     public DoctorDTO getDoctorById(long id) {
-        return doctorRepo.findById(id).map(this::mapearDTO).orElse(null);
+        DoctorDTO doctorDTO = doctorRepo.findById(id).map(this::mapearDTO).orElse(null);
+
+        if (doctorDTO == null){
+            return llenarMensajeError("El doctor no existe");
+        }
+        return doctorDTO;
     }
 
     @Override
@@ -64,5 +74,11 @@ public class DoctorService implements IDoctorService {
         doctorDTO.setEspecialidad(doctor.getEspecialidad().getNombre());
 
         return doctorDTO;
+    }
+
+    private DoctorDTO llenarMensajeError(String mensajeError) {
+        DoctorDTO errorDTO = new DoctorDTO();
+        errorDTO.setMensajeError(mensajeError);
+        return errorDTO;
     }
 }

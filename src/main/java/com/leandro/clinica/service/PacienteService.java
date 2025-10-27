@@ -17,12 +17,26 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public List<PacienteDTO> getPacientes() {
-        return pacienteRepo.findAll().stream().map(this::mapearDTO).toList();
+
+        List<PacienteDTO> listaPacientes = pacienteRepo.findAll().stream().map(this::mapearDTO).toList();
+
+        if (listaPacientes.isEmpty()) {
+            return List.of(llenarMensajeError("No hay pacientes registrados"));
+        }
+
+        return listaPacientes;
     }
+
 
     @Override
     public PacienteDTO getPacienteById(long id) {
-        return pacienteRepo.findById(id).map(this::mapearDTO).orElse(null);
+        PacienteDTO pacienteDTO = pacienteRepo.findById(id).map(this::mapearDTO).orElse(null);
+
+        if (pacienteDTO == null) {
+
+            return llenarMensajeError("El paciente no existe");
+        }
+        return pacienteDTO;
     }
 
     @Override
@@ -51,6 +65,12 @@ public class PacienteService implements IPacienteService {
         pacienteDTO.setCelular(paciente.getCelular());
 
         return pacienteDTO;
+    }
+
+    private PacienteDTO llenarMensajeError(String mensajeError) {
+        PacienteDTO errorDTO = new PacienteDTO();
+        errorDTO.setMensajeError(mensajeError);
+        return errorDTO;
     }
 
 }
