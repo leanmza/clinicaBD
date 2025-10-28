@@ -151,7 +151,6 @@ public class TurnoService implements ITurnoService {
         } else {
             return llenarMensajeError("La fecha y hora elegidas no están disponibles");
         }
-
     }
 
     private LocalDateTime primerTurnoDelProximoDía() {
@@ -184,7 +183,6 @@ public class TurnoService implements ITurnoService {
         } else if (dia == DayOfWeek.SUNDAY) {
             siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(1), LocalTime.of(8, 0));
         }
-
         return siguienteFecha;
     }
 
@@ -198,8 +196,6 @@ public class TurnoService implements ITurnoService {
         turnoDTO.setHora(turno.getFechaHora().toLocalTime());
         turnoDTO.setOcupado(turno.isOcupado());
         return turnoDTO;
-
-
     }
 
     private TurnoDTO llenarMensajeError(String mensajeError) {
