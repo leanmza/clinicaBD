@@ -1,5 +1,6 @@
 package com.leandro.clinica.service;
 
+import com.leandro.clinica.DTO.DoctorDTO;
 import com.leandro.clinica.DTO.TurnoDTO;
 import com.leandro.clinica.model.Doctor;
 import com.leandro.clinica.model.Turno;
@@ -32,17 +33,31 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnosByNombreDoctor(String nombre, String apellido) {
-        return turnoRepo.findTurnoByNombreDoctor(nombre, apellido).stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos = turnoRepo.findTurnoByNombreDoctor(nombre, apellido).stream().map(this::mapearDTO).toList();
+        if (listaTurnos.isEmpty()) {
+            return List.of(llenarMensajeError("No hay turnos pendientes para el doctor" + nombre + " " + apellido));
+        }
+        return listaTurnos;
     }
 
     @Override
     public List<TurnoDTO> getTurnosByNombrePaciente(String nombre, String apellido) {
-        return turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos = turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
+
+        if (listaTurnos.isEmpty()){
+            return List.of(llenarMensajeError("No hay turnos pendientes para el paciente" + nombre + " " + apellido));
+        }
+        return listaTurnos;
     }
 
     @Override
     public List<TurnoDTO> getTurnosPendientes() {
-        return turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+
+        if (listaTurnos.isEmpty()){
+            return List.of(llenarMensajeError("No hay turnos pendientes en la clínica"))  ;
+        }
+        return listaTurnos;
     }
 
     //Asigna automáticamente los turnos, uno detrás de otro, excepto que haya un turno previo cancelado
@@ -85,7 +100,11 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnos() {
-        return turnoRepo.findAllOrdenadosPorFecha().stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos =  turnoRepo.findAllOrdenadosPorFecha().stream().map(this::mapearDTO).toList();
+        if (listaTurnos.isEmpty()){
+            return List.of(llenarMensajeError("No hay turnos cargados"))  ;
+        }
+        return listaTurnos;
     }
 
     @Override
@@ -103,7 +122,11 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnosCancelados() {
-        return turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos =  turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+        if (listaTurnos.isEmpty()){
+            return List.of(llenarMensajeError("No hay turnos cancelados"))  ;
+        }
+        return listaTurnos;
     }
 
     @Override
@@ -118,7 +141,7 @@ public class TurnoService implements ITurnoService {
             return mapearDTO(turno);
         }
 
-        // Si encuetra un turno que ya existe con el doctor y fecha pasados, reviso si ocupado es esta false,
+        // Si encuentra un turno que ya existe con el doctor y fecha pasados, reviso si ocupado es esta false,
         // si lo está, le asigno el id del turno existente y cambio ocupado a true
         if (estaDisponible.isPresent() && !estaDisponible.get().isOcupado()) {
             turno.setId(estaDisponible.get().getId());
@@ -126,7 +149,7 @@ public class TurnoService implements ITurnoService {
             turnoRepo.save(turno);
             return mapearDTO(turno);
         } else {
-            throw new RuntimeException("La fecha y hora elegidas no están disponibles");
+            return llenarMensajeError("La fecha y hora elegidas no están disponibles");
         }
 
     }
@@ -177,6 +200,12 @@ public class TurnoService implements ITurnoService {
         return turnoDTO;
 
 
+    }
+
+    private TurnoDTO llenarMensajeError(String mensajeError) {
+        TurnoDTO errorDTO = new TurnoDTO();
+        errorDTO.setMensajeError(mensajeError);
+        return errorDTO;
     }
 }
 
