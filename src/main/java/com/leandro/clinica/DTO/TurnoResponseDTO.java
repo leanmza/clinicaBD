@@ -12,13 +12,14 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TurnoDTO {
+public class TurnoResponseDTO {
 
         private long id;
         private LocalDate fecha;
         private LocalTime hora;
         private boolean ocupado;
-        private PacienteDTO paciente;
-        private DoctorDTO doctor;
+        private PacienteResponseDTO paciente;
+        private DoctorResponseDTO doctor;
         private String mensajeError;
 }
+

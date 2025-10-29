@@ -1,15 +1,14 @@
 package com.leandro.clinica.service;
 
-import com.leandro.clinica.DTO.DoctorDTO;
+import com.leandro.clinica.DTO.DoctorResponseDTO;
 import com.leandro.clinica.model.Doctor;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface IDoctorService {
-    List<DoctorDTO> getDoctores();
+    List<DoctorResponseDTO> getDoctores();
 
-    DoctorDTO getDoctorById(long id);
+    DoctorResponseDTO getDoctorById(long id);
 
     void createDoctor(Doctor doctor);
 

@@ -1,8 +1,6 @@
 package com.leandro.clinica.service;
 
-import com.leandro.clinica.DTO.DoctorDTO;
-import com.leandro.clinica.DTO.TurnoDTO;
-import com.leandro.clinica.model.Doctor;
+import com.leandro.clinica.DTO.TurnoResponseDTO;
 import com.leandro.clinica.model.Turno;
 import com.leandro.clinica.repository.ITurnoRepository;
 
@@ -32,8 +30,8 @@ public class TurnoService implements ITurnoService {
 
 
     @Override
-    public List<TurnoDTO> getTurnosByNombreDoctor(String nombre, String apellido) {
-        List<TurnoDTO> listaTurnos = turnoRepo.findTurnoByNombreDoctor(nombre, apellido).stream().map(this::mapearDTO).toList();
+    public List<TurnoResponseDTO> getTurnosByNombreDoctor(String nombre, String apellido) {
+        List<TurnoResponseDTO> listaTurnos = turnoRepo.findTurnoByNombreDoctor(nombre, apellido).stream().map(this::mapearDTO).toList();
         if (listaTurnos.isEmpty()) {
             return List.of(llenarMensajeError("No hay turnos pendientes para el doctor" + nombre + " " + apellido));
         }
@@ -41,8 +39,8 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public List<TurnoDTO> getTurnosByNombrePaciente(String nombre, String apellido) {
-        List<TurnoDTO> listaTurnos = turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
+    public List<TurnoResponseDTO> getTurnosByNombrePaciente(String nombre, String apellido) {
+        List<TurnoResponseDTO> listaTurnos = turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
 
         if (listaTurnos.isEmpty()){
             return List.of(llenarMensajeError("No hay turnos pendientes para el paciente" + nombre + " " + apellido));
@@ -51,8 +49,8 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public List<TurnoDTO> getTurnosPendientes() {
-        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+    public List<TurnoResponseDTO> getTurnosPendientes() {
+        List<TurnoResponseDTO> listaTurnos = turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
 
         if (listaTurnos.isEmpty()){
             return List.of(llenarMensajeError("No hay turnos pendientes en la clínica"))  ;
@@ -62,7 +60,7 @@ public class TurnoService implements ITurnoService {
 
     //Asigna automáticamente los turnos, uno detrás de otro, excepto que haya un turno previo cancelado
     @Override
-    public TurnoDTO asignarTurno(Turno turno) {
+    public TurnoResponseDTO asignarTurno(Turno turno) {
         // Obtengo la fecha y hora actual
         LocalDateTime fechaActual = LocalDateTime.now();
 
@@ -99,8 +97,8 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public List<TurnoDTO> getTurnos() {
-        List<TurnoDTO> listaTurnos =  turnoRepo.findAllOrdenadosPorFecha().stream().map(this::mapearDTO).toList();
+    public List<TurnoResponseDTO> getTurnos() {
+        List<TurnoResponseDTO> listaTurnos =  turnoRepo.findAllOrdenadosPorFecha().stream().map(this::mapearDTO).toList();
         if (listaTurnos.isEmpty()){
             return List.of(llenarMensajeError("No hay turnos cargados"))  ;
         }
@@ -108,7 +106,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoDTO getTurnoById(long id) {
+    public TurnoResponseDTO getTurnoById(long id) {
         return turnoRepo.findById(id).map(this::mapearDTO).orElseGet(null);
     }
 
@@ -121,8 +119,8 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public List<TurnoDTO> getTurnosCancelados() {
-        List<TurnoDTO> listaTurnos =  turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+    public List<TurnoResponseDTO> getTurnosCancelados() {
+        List<TurnoResponseDTO> listaTurnos =  turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
         if (listaTurnos.isEmpty()){
             return List.of(llenarMensajeError("No hay turnos cancelados"))  ;
         }
@@ -130,7 +128,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoDTO reservarTurno(Turno turno) {
+    public TurnoResponseDTO reservarTurno(Turno turno) {
         Optional<Turno> estaDisponible = turnoRepo.findTurnoDisponiblePorDoctoryFecha(turno.getDoctor(), turno.getFechaHora());
 
         // Si estaDisponible es null, seteo ocupado true al turno que viene por parámetro y lo guardo
@@ -186,8 +184,8 @@ public class TurnoService implements ITurnoService {
         return siguienteFecha;
     }
 
-    private TurnoDTO mapearDTO(Turno turno) {
-        TurnoDTO turnoDTO = new TurnoDTO();
+    private TurnoResponseDTO mapearDTO(Turno turno) {
+        TurnoResponseDTO turnoDTO = new TurnoResponseDTO();
 
         turnoDTO.setId(turno.getId());
         turnoDTO.setPaciente(pacienteService.getPacienteById(turno.getPaciente().getId()));
@@ -198,8 +196,8 @@ public class TurnoService implements ITurnoService {
         return turnoDTO;
     }
 
-    private TurnoDTO llenarMensajeError(String mensajeError) {
-        TurnoDTO errorDTO = new TurnoDTO();
+    private TurnoResponseDTO llenarMensajeError(String mensajeError) {
+        TurnoResponseDTO errorDTO = new TurnoResponseDTO();
         errorDTO.setMensajeError(mensajeError);
         return errorDTO;
     }

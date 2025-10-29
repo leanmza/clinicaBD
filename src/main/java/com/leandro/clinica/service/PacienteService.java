@@ -1,7 +1,7 @@
 package com.leandro.clinica.service;
 
 
-import com.leandro.clinica.DTO.PacienteDTO;
+import com.leandro.clinica.DTO.PacienteResponseDTO;
 import com.leandro.clinica.model.Paciente;
 import com.leandro.clinica.repository.IPacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,9 @@ public class PacienteService implements IPacienteService {
     private IPacienteRepository pacienteRepo;
 
     @Override
-    public List<PacienteDTO> getPacientes() {
+    public List<PacienteResponseDTO> getPacientes() {
 
-        List<PacienteDTO> listaPacientes = pacienteRepo.findAll().stream().map(this::mapearDTO).toList();
+        List<PacienteResponseDTO> listaPacientes = pacienteRepo.findAll().stream().map(this::mapearDTO).toList();
 
         if (listaPacientes.isEmpty()) {
             return List.of(llenarMensajeError("No hay pacientes registrados"));
@@ -29,8 +29,8 @@ public class PacienteService implements IPacienteService {
 
 
     @Override
-    public PacienteDTO getPacienteById(long id) {
-        PacienteDTO pacienteDTO = pacienteRepo.findById(id).map(this::mapearDTO).orElse(null);
+    public PacienteResponseDTO getPacienteById(long id) {
+        PacienteResponseDTO pacienteDTO = pacienteRepo.findById(id).map(this::mapearDTO).orElse(null);
 
         if (pacienteDTO == null) {
 
@@ -55,8 +55,8 @@ public class PacienteService implements IPacienteService {
         pacienteRepo.save(paciente);
     }
 
-    private PacienteDTO mapearDTO(Paciente paciente) {
-        PacienteDTO pacienteDTO = new PacienteDTO();
+    private PacienteResponseDTO mapearDTO(Paciente paciente) {
+        PacienteResponseDTO pacienteDTO = new PacienteResponseDTO();
 
         pacienteDTO.setId(paciente.getId());
         pacienteDTO.setNombre(paciente.getNombre());
@@ -67,8 +67,8 @@ public class PacienteService implements IPacienteService {
         return pacienteDTO;
     }
 
-    private PacienteDTO llenarMensajeError(String mensajeError) {
-        PacienteDTO errorDTO = new PacienteDTO();
+    private PacienteResponseDTO llenarMensajeError(String mensajeError) {
+        PacienteResponseDTO errorDTO = new PacienteResponseDTO();
         errorDTO.setMensajeError(mensajeError);
         return errorDTO;
     }

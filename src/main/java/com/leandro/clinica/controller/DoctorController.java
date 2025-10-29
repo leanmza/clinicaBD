@@ -1,10 +1,9 @@
 package com.leandro.clinica.controller;
 
-import com.leandro.clinica.DTO.DoctorDTO;
+import com.leandro.clinica.DTO.DoctorResponseDTO;
 import com.leandro.clinica.model.Doctor;
 import com.leandro.clinica.service.IDoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +15,12 @@ public class DoctorController {
     private IDoctorService doctorService;
 
     @GetMapping
-    public List<DoctorDTO> getDoctores(){
+    public List<DoctorResponseDTO> getDoctores(){
         return doctorService.getDoctores();
     }
 
     @GetMapping("/{id}")
-    public DoctorDTO getDoctorById(@PathVariable long id){
+    public DoctorResponseDTO getDoctorById(@PathVariable long id){
         return doctorService.getDoctorById(id);
     }
 

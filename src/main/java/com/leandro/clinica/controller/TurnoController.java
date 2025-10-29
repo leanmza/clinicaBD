@@ -1,11 +1,10 @@
 package com.leandro.clinica.controller;
 
-import com.leandro.clinica.DTO.TurnoDTO;
+import com.leandro.clinica.DTO.TurnoResponseDTO;
 import com.leandro.clinica.model.Turno;
 import com.leandro.clinica.service.ITurnoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,46 +17,46 @@ public class TurnoController {
     private ITurnoService turnoService;
 
     @GetMapping
-    public List<TurnoDTO> getTurnos() {
+    public List<TurnoResponseDTO> getTurnos() {
         return turnoService.getTurnos();
     }
 
     @GetMapping("{id}")
-    public TurnoDTO getTurnoById(@PathVariable long id) {
+    public TurnoResponseDTO getTurnoById(@PathVariable long id) {
         return turnoService.getTurnoById(id);
     }
 
     @GetMapping("/pendientes")
-    public List<TurnoDTO> getTurnosPendientes() {
+    public List<TurnoResponseDTO> getTurnosPendientes() {
         return turnoService.getTurnosPendientes();
     }
 
     @GetMapping("/cancelados")
-    public List<TurnoDTO> getTurnosCancelados() {
+    public List<TurnoResponseDTO> getTurnosCancelados() {
         return turnoService.getTurnosCancelados();
 
     }
 
     @GetMapping("/doctor")
-    public List<TurnoDTO> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
+    public List<TurnoResponseDTO> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
                                                            @RequestParam @Valid String apellido) {
         return turnoService.getTurnosByNombreDoctor(nombre, apellido);
     }
 
     @GetMapping("/paciente")
-    public List<TurnoDTO> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
+    public List<TurnoResponseDTO> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
                                                              @RequestParam @Valid String apellido) {
         return turnoService.getTurnosByNombrePaciente(nombre, apellido);
     }
 
     @PostMapping("/asignar")
-    public TurnoDTO asignarTurno(@RequestBody Turno turno) {
-        TurnoDTO turnoAsignado = turnoService.asignarTurno(turno);
+    public TurnoResponseDTO asignarTurno(@RequestBody Turno turno) {
+        TurnoResponseDTO turnoAsignado = turnoService.asignarTurno(turno);
         return turnoAsignado;
     }
 
     @PostMapping("/reservar")
-    public TurnoDTO reservarTurno(@RequestBody Turno turno) {
+    public TurnoResponseDTO reservarTurno(@RequestBody Turno turno) {
         return turnoService.reservarTurno(turno);
     }
 

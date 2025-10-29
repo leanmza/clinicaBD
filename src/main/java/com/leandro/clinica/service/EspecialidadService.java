@@ -1,12 +1,10 @@
 package com.leandro.clinica.service;
 
-import com.leandro.clinica.DTO.EspecialidadDTO;
+import com.leandro.clinica.DTO.EspecialidadResponseDTO;
 import com.leandro.clinica.model.Especialidad;
 import com.leandro.clinica.repository.IEspecialidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class EspecialidadService implements IEspecialidadService {
@@ -26,12 +24,12 @@ public class EspecialidadService implements IEspecialidadService {
 
 
     @Override
-    public EspecialidadDTO getEspecialidadById(long id) {
+    public EspecialidadResponseDTO getEspecialidadById(long id) {
         return especialidadRepo.findById(id).map(this::mapearDTO).orElseGet(null);
     }
 
-    private EspecialidadDTO mapearDTO(Especialidad especialidad) {
-        EspecialidadDTO especialidadDTO = new EspecialidadDTO();
+    private EspecialidadResponseDTO mapearDTO(Especialidad especialidad) {
+        EspecialidadResponseDTO especialidadDTO = new EspecialidadResponseDTO();
         especialidadDTO.setNombreEspecialidad(especialidad.getNombre());
         return especialidadDTO;
     }
