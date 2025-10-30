@@ -66,9 +66,8 @@ public class TurnoService implements ITurnoService {
         // Obtengo la fecha y hora actual
         LocalDateTime fechaActual = LocalDateTime.now();
 
-        //Primero busco el primer turno sin ocupar del doctor, puede ser cancelado o libre
+        //Primero busco el primer turno sin ocupar del doctor, puede ser cancelado
         List<Turno> turnosCancelados = turnoRepo.findTurnosCanceladosPorDoctorDesdeFecha(turno.getDoctor(), fechaActual);
-
 
         //Si hay turnos cancelados, le asigno a turno, que viene por parámetro con el doctor y el paciente,  el id y fecha/hora
         // del primer turno cancelado de la lista de turnos cancelados
@@ -80,16 +79,19 @@ public class TurnoService implements ITurnoService {
             return mapearDTO(turno);
         } else {
 
-            // Busco la fecha del último turno del doctor
+            // Busco la fecha y hora del último turno del doctor y los horarios de inicio y fin
             LocalDateTime ultimaFecha = turnoRepo.findUltimaFechaTurnoByDoctor(turno.getDoctor());
 
-            // Si ultimaFecha es null, busco el primer horario libre del día siguiente;
+            LocalTime horaInicio = doctorService.getHorarioInicio(turno.getDoctor());
+            LocalTime horaFin = doctorService.getHorarioFin(turno.getDoctor());
+
+                // Si ultimaFecha es null, busco el primer horario libre del día siguiente;
             if (ultimaFecha == null) {
-                ultimaFecha = primerTurnoDelProximoDía();
+                ultimaFecha = primerTurnoDelProximoDía(horaInicio, horaFin);
             }
 
             // Busco el proximo horario disponible
-            LocalDateTime siguiente = siguienteTurno(ultimaFecha);
+            LocalDateTime siguiente = siguienteTurno(ultimaFecha, horaInicio, horaFin);
 
             turno.setFechaHora(siguiente);
             turno.setOcupado(true);
@@ -153,7 +155,7 @@ public class TurnoService implements ITurnoService {
         }
     }
 
-    private LocalDateTime primerTurnoDelProximoDía() {
+    private LocalDateTime primerTurnoDelProximoDía(LocalTime horaInicio, LocalTime horaFin) {
         LocalDate hoy = LocalDate.now();
         //Establezco el día posterior a hoy, si hoy es viernes le sumo 3 para que pase al lunes siguiente
         LocalDate proximoDía;
@@ -163,25 +165,32 @@ public class TurnoService implements ITurnoService {
         } else {
             proximoDía = hoy.plusDays(1);
         }
+        LocalTime horaPrimerTurno;
 
-        return LocalDateTime.of(proximoDía, LocalTime.of(8, 0));
+        if(horaInicio.isBefore(horaFin)){
+            horaPrimerTurno = horaInicio;
+        } else {
+            horaPrimerTurno =horaFin;
+        }
+
+        return LocalDateTime.of(proximoDía, horaPrimerTurno);
     }
 
-    private LocalDateTime siguienteTurno(LocalDateTime ultimoTurno) {
+    private LocalDateTime siguienteTurno(LocalDateTime ultimoTurno, LocalTime horaInicio, LocalTime horaFin) {
         //Sumo 30 minutos al la hora del último turno
         LocalDateTime siguienteFecha = ultimoTurno.plusMinutes(30);
 
         // Si la hora se pasa de las 18:00, pasa al siguiente día siguiente a las 8:00
-        if (siguienteFecha.toLocalTime().isAfter(LocalTime.of(18, 0))) {
-            siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(1), LocalTime.of(8, 0));
+        if (siguienteFecha.toLocalTime().isAfter(horaFin)) {
+            siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(1), horaInicio);
         }
 
         // Si el día siguiente cae sábado o domingo, pasa para el lunes al lunes
         DayOfWeek dia = siguienteFecha.getDayOfWeek();
         if (dia == DayOfWeek.SATURDAY) {
-            siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(2), LocalTime.of(8, 0));
+            siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(2), horaInicio);
         } else if (dia == DayOfWeek.SUNDAY) {
-            siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(1), LocalTime.of(8, 0));
+            siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(1), horaFin);
         }
         return siguienteFecha;
     }

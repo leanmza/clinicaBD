@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +69,15 @@ public class DoctorService implements IDoctorService {
         doctorRepo.save(doctor);
     }
 
+    public LocalTime getHorarioInicio(Doctor doctor){
+        return doctorRepo.getHorarioInicio(doctor);
+    }
+
+    public LocalTime getHorarioFin(Doctor doctor){
+        return doctorRepo.getHorarioFin(doctor);
+    }
+
+
     private DoctorDTO mapearDTO(Doctor doctor) {
         DoctorDTO doctorDTO = new DoctorDTO();
         doctorDTO.setId(doctor.getId());
@@ -75,6 +86,8 @@ public class DoctorService implements IDoctorService {
         doctorDTO.setEmail(doctor.getEmail());
         doctorDTO.setCelular(doctor.getCelular());
         doctorDTO.setEspecialidad(doctor.getEspecialidad().getNombre());
+        doctorDTO.setHoraInicio(String.valueOf(doctor.getHorarios().getHoraInicio()));
+        doctorDTO.setHoraFin(String.valueOf(doctor.getHorarios().getHoraFin()));
 
         return doctorDTO;
     }

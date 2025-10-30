@@ -20,5 +20,7 @@ public class DoctorDTO {
     private String celular;
     private String email;
     private String especialidad;
+    private String horaInicio;
+    private String horaFin;
     private String mensajeError;
 }

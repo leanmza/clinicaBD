@@ -29,4 +29,8 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Turno> listaTurnos;
 
+    @ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @JoinColumn(name = "horarios_id", nullable = false)
+    private Horarios horarios;
+
 }
