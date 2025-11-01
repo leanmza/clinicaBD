@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "bdf440d2-9169-4a2f-8538-c2232ba164c9",
+		"name": "clinica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29251427"
+	},
+	"item": [
+		{
+			"name": "paciente",
+			"item": [
+				{
+					"name": "get pacientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/paciente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"paciente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get pacienteById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/paciente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"paciente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get turnoByNombreYApellidoPaciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/turno/paciente?nombre=ana&apellido=rivas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"paciente"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "ana"
+								},
+								{
+									"key": "apellido",
+									"value": "rivas"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create paciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nombre\":\"Leandro\",\r\n\"apellido\": \"Hidalgo\",\r\n\"celular\": 2615555555,\r\n\"email\":\"test@gmail.com\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/paciente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"paciente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete paciente",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/paciente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"paciente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update paciente",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nombre\":\"Leandro\",\r\n\"apellido\": \"Hidalgo\",\r\n\"celular\": 2615555555,\r\n\"email\":\"test@gmail.com\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/paciente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"paciente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "doctor",
+			"item": [
+				{
+					"name": "get doctores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/doctor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get turnoByNombreYApellidoDoctor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/turno/doctor?nombre=lucía&apellido=morales",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"doctor"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "lucía"
+								},
+								{
+									"key": "apellido",
+									"value": "morales"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get doctorById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/doctor/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"doctor",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create doctor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Test\",\r\n  \"apellido\": \"Test\",\r\n  \"email\": \"test.perez@clinica.com\",\r\n  \"celular\": \"261500000\",\r\n  \"especialidad\": {\r\n    \"nombre\": \"Odontología General\"\r\n  },\r\n  \"horarios\": {\r\n    \"horaInicio\": \"10:00:00\",\r\n    \"horaFin\": \"20:00:00\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/doctor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update doctor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Test\",\r\n  \"apellido\": \"Test\",\r\n  \"email\": \"test.perez@clinica.com\",\r\n  \"celular\": \"261500000\",\r\n  \"especialidad\": {\r\n    \"nombre\": \"Odontología Adultos\"\r\n  },\r\n  \"horarios\": {\r\n    \"horaInicio\": \"12:00:00\",\r\n    \"horaFin\": \"16:00:00\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/doctor/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"doctor",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete doctor",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/doctor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"doctor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "turno",
+			"item": [
+				{
+					"name": "get turnoById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/turno/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get turnos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/turno",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create asignar turno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"paciente\":{\"id\":5},\r\n    \"doctor\":{\"id\":10}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/turno/asignar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"asignar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get turnos pendientes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/turno/pendientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"pendientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete turnoById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/turno/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get turnos cancelados",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/turno/cancelados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"cancelados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reservar turno",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"paciente\":{\"id\":5},\r\n    \"doctor\":{\"id\":10},\r\n     \"fechaHora\": \"2025-11-13T16:30:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/turno/reservar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"turno",
+								"reservar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
