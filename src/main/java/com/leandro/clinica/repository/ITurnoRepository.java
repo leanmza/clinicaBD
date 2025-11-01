@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.print.Doc;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +69,7 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
             "ORDER BY t.fechaHora ASC")
     List<Turno> findTurnosCanceladosPorDoctorDesdeFecha(@Param("doctor") Doctor doctor,
                                                         @Param("fechaActual") LocalDateTime fechaActual);
-
+//Devuelve un turno si existe en la fecha elegida para un doctor específico
     @Query("SELECT t " +
             "FROM Turno t " +
             "WHERE t.doctor = :doctor " +
@@ -76,5 +77,12 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
     Optional<Turno> findTurnoDisponiblePorDoctoryFecha(@Param("doctor") Doctor doctor,
                                                         @Param("fechaElegida") LocalDateTime fechaElegida);
 
+//Devuelve una lista de turnos para un doctor específico, desde la fecha actual
+    @Query("SELECT t " +
+            "FROM Turno t " +
+            "WHERE t.doctor = :doctor " +
+            "AND t.fechaHora >= CURRENT_TIMESTAMP " +
+            "ORDER BY t.fechaHora ASC")
+    List<Turno> findTurnosPorDoctor(@Param("doctor") Doctor doctor);
 
 }

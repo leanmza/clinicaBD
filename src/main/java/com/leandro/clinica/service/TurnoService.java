@@ -7,12 +7,11 @@ import com.leandro.clinica.model.Turno;
 import com.leandro.clinica.repository.ITurnoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +43,7 @@ public class TurnoService implements ITurnoService {
     public List<TurnoDTO> getTurnosByNombrePaciente(String nombre, String apellido) {
         List<TurnoDTO> listaTurnos = turnoRepo.findTurnoByNombrePaciente(nombre, apellido).stream().map(this::mapearDTO).toList();
 
-        if (listaTurnos.isEmpty()){
+        if (listaTurnos.isEmpty()) {
             return List.of(llenarMensajeError("No hay turnos pendientes para el paciente" + nombre + " " + apellido));
         }
         return listaTurnos;
@@ -54,8 +53,8 @@ public class TurnoService implements ITurnoService {
     public List<TurnoDTO> getTurnosPendientes() {
         List<TurnoDTO> listaTurnos = turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
 
-        if (listaTurnos.isEmpty()){
-            return List.of(llenarMensajeError("No hay turnos pendientes en la clínica"))  ;
+        if (listaTurnos.isEmpty()) {
+            return List.of(llenarMensajeError("No hay turnos pendientes en la clínica"));
         }
         return listaTurnos;
     }
@@ -65,6 +64,8 @@ public class TurnoService implements ITurnoService {
     public TurnoDTO asignarTurno(Turno turno) {
         // Obtengo la fecha y hora actual
         LocalDateTime fechaActual = LocalDateTime.now();
+        LocalTime horaInicio = doctorService.getHorarioInicio(turno.getDoctor());
+        LocalTime horaFin = doctorService.getHorarioFin(turno.getDoctor());
 
         //Primero busco el primer turno sin ocupar del doctor, puede ser cancelado
         List<Turno> turnosCancelados = turnoRepo.findTurnosCanceladosPorDoctorDesdeFecha(turno.getDoctor(), fechaActual);
@@ -77,15 +78,22 @@ public class TurnoService implements ITurnoService {
             turno.setFechaHora(turnosCancelados.get(0).getFechaHora());
             turnoRepo.save(turno);
             return mapearDTO(turno);
+        }
+        //Si la validacion anterior es falsa, reviso si hay huecos de horas y fechas en los turnos del doctor,
+        // como puede pasar si se usa la función reservarTurno que permite elegir día y hora
+        LocalDateTime fechaDisponible = buscarTurnosLibresPrevios(turno.getDoctor(), horaInicio, horaFin);
+        if (fechaDisponible != null) {
+            turno.setFechaHora(fechaDisponible);
+            turno.setOcupado(true);
+            turnoRepo.save(turno);
+            return mapearDTO(turno);
         } else {
 
             // Busco la fecha y hora del último turno del doctor y los horarios de inicio y fin
             LocalDateTime ultimaFecha = turnoRepo.findUltimaFechaTurnoByDoctor(turno.getDoctor());
 
-            LocalTime horaInicio = doctorService.getHorarioInicio(turno.getDoctor());
-            LocalTime horaFin = doctorService.getHorarioFin(turno.getDoctor());
 
-                // Si ultimaFecha es null, busco el primer horario libre del día siguiente;
+            // Si ultimaFecha es null, busco el primer horario libre del día siguiente;
             if (ultimaFecha == null) {
                 ultimaFecha = primerTurnoDelProximoDía(horaInicio, horaFin);
             }
@@ -102,9 +110,9 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnos() {
-        List<TurnoDTO> listaTurnos =  turnoRepo.findAllOrdenadosPorFecha().stream().map(this::mapearDTO).toList();
-        if (listaTurnos.isEmpty()){
-            return List.of(llenarMensajeError("No hay turnos cargados"))  ;
+        List<TurnoDTO> listaTurnos = turnoRepo.findAllOrdenadosPorFecha().stream().map(this::mapearDTO).toList();
+        if (listaTurnos.isEmpty()) {
+            return List.of(llenarMensajeError("No hay turnos cargados"));
         }
         return listaTurnos;
     }
@@ -124,9 +132,9 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnosCancelados() {
-        List<TurnoDTO> listaTurnos =  turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
-        if (listaTurnos.isEmpty()){
-            return List.of(llenarMensajeError("No hay turnos cancelados"))  ;
+        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+        if (listaTurnos.isEmpty()) {
+            return List.of(llenarMensajeError("No hay turnos cancelados"));
         }
         return listaTurnos;
     }
@@ -137,10 +145,16 @@ public class TurnoService implements ITurnoService {
 
         // Si estaDisponible es null, seteo ocupado true al turno que viene por parámetro y lo guardo
         if (estaDisponible.isEmpty()) {
-
             turno.setOcupado(true);
             turnoRepo.save(turno);
             return mapearDTO(turno);
+        }
+
+        // Veo si el horario elegido está dentro del horario del doctor
+        LocalTime horaInicio = doctorService.getHorarioInicio(turno.getDoctor());
+        LocalTime horaFin = doctorService.getHorarioFin(turno.getDoctor());
+        if (!validarHorario(turno.getFechaHora(), horaInicio, horaFin)) {
+            return llenarMensajeError("El profesional no atiende en el horario elegido");
         }
 
         // Si encuentra un turno que ya existe con el doctor y fecha pasados, reviso si ocupado es esta false,
@@ -155,6 +169,41 @@ public class TurnoService implements ITurnoService {
         }
     }
 
+    private LocalDateTime buscarTurnosLibresPrevios(Doctor doctor, LocalTime horaInicio, LocalTime horaFin) {
+        //Obtengo la lista de turnos del doctor elegido con fecha mayor igual a la actual
+        List<Turno> listaTurnos = turnoRepo.findTurnosPorDoctor(doctor);
+
+        //Saco la lista de fecha y hora de la lista de turnos
+        List<LocalDateTime> listaFechas = listaTurnos.stream().map(Turno::getFechaHora).toList();
+        LocalDateTime fechaCandidata;
+
+
+        //Reviso con un for la diferencia de fecha y hora entre un turno asignado y el siguiente
+        for (int i = 0; i < listaFechas.size() - 1; i++) {
+            LocalDateTime fechaPresente = listaTurnos.get(i).getFechaHora();
+            LocalDateTime fechaSiguiente = listaTurnos.get(i + 1).getFechaHora();
+            Duration diferencia = Duration.between(fechaPresente, fechaSiguiente);
+
+            //Reviso si la diferencia entre las horas es mayor a 30 minutos y si el horario 30 minutos más tarde de fechaPresente es válido
+            if (diferencia.toMinutes() > 30 && validarHorario(fechaPresente.plusMinutes(30), horaInicio, horaFin)) {
+                fechaCandidata = siguienteTurno(fechaPresente, horaInicio, horaFin);
+                //revisa si la fecha candidata no existe en la lista de fechas y horas
+                if (!listaFechas.contains(fechaCandidata)) {
+                    return fechaCandidata;
+                }
+            }
+            //Reviso si la diferecia entre horas es mayor a 30 minutos y si hay diferencia mayor a 1 día
+            if (diferencia.toMinutes() > 30 && diferencia.toDays() > 1) {
+                fechaCandidata = siguienteTurno(fechaPresente, horaInicio, horaFin);
+                if (!listaFechas.contains(fechaCandidata)) {
+
+                    return fechaCandidata;
+                }
+            }
+        }
+        return null;
+    }
+
     private LocalDateTime primerTurnoDelProximoDía(LocalTime horaInicio, LocalTime horaFin) {
         LocalDate hoy = LocalDate.now();
         //Establezco el día posterior a hoy, si hoy es viernes le sumo 3 para que pase al lunes siguiente
@@ -167,10 +216,10 @@ public class TurnoService implements ITurnoService {
         }
         LocalTime horaPrimerTurno;
 
-        if(horaInicio.isBefore(horaFin)){
+        if (horaInicio.isBefore(horaFin)) {
             horaPrimerTurno = horaInicio;
         } else {
-            horaPrimerTurno =horaFin;
+            horaPrimerTurno = horaFin;
         }
 
         return LocalDateTime.of(proximoDía, horaPrimerTurno);
@@ -185,7 +234,7 @@ public class TurnoService implements ITurnoService {
             siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(1), horaInicio);
         }
 
-        // Si el día siguiente cae sábado o domingo, pasa para el lunes al lunes
+        // Si el día siguiente cae sábado o domingo, pasa para el lunes
         DayOfWeek dia = siguienteFecha.getDayOfWeek();
         if (dia == DayOfWeek.SATURDAY) {
             siguienteFecha = LocalDateTime.of(siguienteFecha.toLocalDate().plusDays(2), horaInicio);
@@ -211,6 +260,11 @@ public class TurnoService implements ITurnoService {
         TurnoDTO errorDTO = new TurnoDTO();
         errorDTO.setMensajeError(mensajeError);
         return errorDTO;
+    }
+
+    private boolean validarHorario(LocalDateTime fechaHoraElegida, LocalTime horaInicio, LocalTime horaFin) {
+        LocalTime horaElegida = fechaHoraElegida.toLocalTime();
+        return !horaElegida.isBefore(horaInicio) && !horaElegida.isAfter(horaFin);
     }
 }
 
