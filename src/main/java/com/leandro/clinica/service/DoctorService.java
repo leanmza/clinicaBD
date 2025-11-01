@@ -3,6 +3,7 @@ package com.leandro.clinica.service;
 import com.leandro.clinica.DTO.DoctorDTO;
 import com.leandro.clinica.model.Doctor;
 import com.leandro.clinica.model.Especialidad;
+import com.leandro.clinica.model.Horarios;
 import com.leandro.clinica.repository.IDoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class DoctorService implements IDoctorService {
 
     @Autowired
     private EspecialidadService especialidadService;
+
+    @Autowired
+    private HorariosService horariosService;
 
     @Override
     public List<DoctorDTO> getDoctores() {
@@ -49,6 +53,15 @@ public class DoctorService implements IDoctorService {
         if (especialidad != null) {
             doctor.setEspecialidad(especialidad);
         }
+
+        Horarios horario = horariosService.getHorariosPorRango(
+                doctor.getHorarios().getHoraInicio(),
+                doctor.getHorarios().getHoraFin()
+        );
+
+        if (horario != null) {
+            doctor.setHorarios(horario);
+        }
         doctorRepo.save(doctor);
     }
 
@@ -64,6 +77,27 @@ public class DoctorService implements IDoctorService {
         Especialidad especialidad = especialidadService.getEspecialidadByName(doctor.getEspecialidad().getNombre());
         if (especialidad != null) {
             doctor.setEspecialidad(especialidad);
+        } else {
+            Especialidad nuevaEspecialidad = new Especialidad();
+            nuevaEspecialidad.setNombre(doctor.getEspecialidad().getNombre());
+            especialidadService.createEspecialidad(nuevaEspecialidad);
+            doctor.setEspecialidad(nuevaEspecialidad);
+        }
+
+        Horarios horario = horariosService.getHorariosPorRango(
+                doctor.getHorarios().getHoraInicio(),
+                doctor.getHorarios().getHoraFin()
+        );
+
+        if (horario != null) {
+            doctor.setHorarios(horario);
+        } else {
+
+            Horarios nuevoHorario = new Horarios();
+            nuevoHorario.setHoraInicio(doctor.getHorarios().getHoraInicio());
+            nuevoHorario.setHoraFin(doctor.getHorarios().getHoraFin());
+            horariosService.createHorario(nuevoHorario);
+            doctor.setHorarios(nuevoHorario);
         }
 
         doctorRepo.save(doctor);

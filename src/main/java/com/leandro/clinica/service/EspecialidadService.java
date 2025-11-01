@@ -19,15 +19,18 @@ public class EspecialidadService implements IEspecialidadService {
 
         Especialidad especialidad = especialidadRepo.findEspecialidadByNombre(nombre);
 
-     return especialidad;
+        return especialidad;
 
     }
-
-
 
     @Override
     public EspecialidadDTO getEspecialidadById(long id) {
         return especialidadRepo.findById(id).map(this::mapearDTO).orElseGet(null);
+    }
+
+    @Override
+    public void createEspecialidad(Especialidad especialidad) {
+        especialidadRepo.save(especialidad);
     }
 
     private EspecialidadDTO mapearDTO(Especialidad especialidad) {

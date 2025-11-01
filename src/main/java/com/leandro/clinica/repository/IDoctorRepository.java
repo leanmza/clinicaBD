@@ -11,10 +11,14 @@ import java.time.LocalTime;
 @Repository
 public interface IDoctorRepository extends JpaRepository<Doctor, Long> {
 
-    @Query("SELECT d.horarios.horaInicio FROM Doctor d WHERE d = :doctor")
+    @Query("SELECT d.horarios.horaInicio " +
+            "FROM Doctor d " +
+            "WHERE d = :doctor")
     LocalTime getHorarioInicio(@Param("doctor") Doctor doctor);
 
-    @Query("SELECT d.horarios.horaFin FROM Doctor d WHERE d = :doctor")
+    @Query("SELECT d.horarios.horaFin " +
+            "FROM Doctor d " +
+            "WHERE d = :doctor")
     LocalTime getHorarioFin(@Param("doctor") Doctor doctor);
 
 }
