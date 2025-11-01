@@ -31,3 +31,6 @@ public class DoctorRequestDTO {
     private String especialidad;
 }
 
+
+
+

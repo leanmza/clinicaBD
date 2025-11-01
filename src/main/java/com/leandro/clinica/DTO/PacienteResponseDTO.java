@@ -18,3 +18,6 @@ public class PacienteResponseDTO {
     private String mensajeError;
 }
 
+
+
+
