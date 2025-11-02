@@ -1,0 +1,170 @@
+CREATE DATABASE  IF NOT EXISTS `clinica` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `clinica`;
+-- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: clinica
+-- ------------------------------------------------------
+-- Server version	5.5.5-10.4.32-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `doctor`
+--
+
+DROP TABLE IF EXISTS `doctor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `doctor` (
+  `doctor_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `apellido` varchar(255) DEFAULT NULL,
+  `celular` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `especialidad_id` bigint(20) NOT NULL,
+  `horarios_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`doctor_id`),
+  KEY `FKtbuk69oxc1nipf6vddfw8hmi` (`especialidad_id`),
+  KEY `FKsex711r2vbyrex0a4n2rk0kr1` (`horarios_id`),
+  CONSTRAINT `FKsex711r2vbyrex0a4n2rk0kr1` FOREIGN KEY (`horarios_id`) REFERENCES `horarios` (`horarios_id`),
+  CONSTRAINT `FKtbuk69oxc1nipf6vddfw8hmi` FOREIGN KEY (`especialidad_id`) REFERENCES `especialidad` (`especialidad_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `doctor`
+--
+
+LOCK TABLES `doctor` WRITE;
+/*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
+INSERT INTO `doctor` VALUES (1,'Pérez','2611111111','juan.perez@gmail.com','Juan',1,1),(2,'Gómez','2612222222','ana.gomez@gmail.com','Ana',2,1),(3,'Martínez','2613333333','luis.martinez@gmail.com','Luis',3,2),(4,'Rodríguez','2614444444','marta.rodriguez@gmail.com','Marta',4,2),(5,'Sánchez','2615555555','carlos.sanchez@gmail.com','Carlos',5,3),(6,'Fernández','2616666666','laura.fernandez@gmail.com','Laura',6,3),(7,'Ramírez','2617777777','diego.ramirez@gmail.com','Diego',7,4),(8,'Torres','2618888888','sofia.torres@gmail.com','Sofía',8,4),(9,'Vega','2619999999','mario.vega@gmail.com','Mario',9,1),(10,'Morales','2610000000','lucia.morales@gmail.com','Lucía',10,2);
+/*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `especialidad`
+--
+
+DROP TABLE IF EXISTS `especialidad`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `especialidad` (
+  `especialidad_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `nombre_especialidad` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`especialidad_id`),
+  UNIQUE KEY `UK370cq5j57aunndshju3f1fa2y` (`nombre_especialidad`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `especialidad`
+--
+
+LOCK TABLES `especialidad` WRITE;
+/*!40000 ALTER TABLE `especialidad` DISABLE KEYS */;
+INSERT INTO `especialidad` VALUES (7,'Cirugía Oral'),(3,'Endodoncia'),(8,'Estética Dental'),(6,'Implantología'),(1,'Odontología General'),(2,'Ortodoncia'),(5,'Pediatría Dental'),(4,'Periodoncia'),(9,'Prostodoncia'),(10,'Radiología Dental');
+/*!40000 ALTER TABLE `especialidad` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `horarios`
+--
+
+DROP TABLE IF EXISTS `horarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `horarios` (
+  `horarios_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `hora_fin` time(6) DEFAULT NULL,
+  `hora_inicio` time(6) DEFAULT NULL,
+  PRIMARY KEY (`horarios_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `horarios`
+--
+
+LOCK TABLES `horarios` WRITE;
+/*!40000 ALTER TABLE `horarios` DISABLE KEYS */;
+INSERT INTO `horarios` VALUES (1,'12:00:00.000000','08:00:00.000000'),(2,'13:00:00.000000','09:00:00.000000'),(3,'19:00:00.000000','15:00:00.000000'),(4,'20:00:00.000000','16:00:00.000000');
+/*!40000 ALTER TABLE `horarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `paciente`
+--
+
+DROP TABLE IF EXISTS `paciente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paciente` (
+  `paciente_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `apellido` varchar(255) DEFAULT NULL,
+  `celular` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`paciente_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `paciente`
+--
+
+LOCK TABLES `paciente` WRITE;
+/*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
+INSERT INTO `paciente` VALUES (1,'Rivas','2616112233','ana.rivas@gmail.com','Ana'),(2,'López','2616223344','jose.lopez@gmail.com','José'),(3,'Fernández','2616334455','carla.fernandez@gmail.com','Carla'),(4,'García','2616445566','martin.garcia@gmail.com','Martín'),(5,'Pérez','2616556677','valentina.perez@gmail.com','Valentina'),(6,'Gómez','2616667788','tomas.gomez@gmail.com','Tomás'),(7,'Rodríguez','2616778899','luciana.rodriguez@gmail.com','Luciana'),(8,'Sánchez','2616889900','diego.sanchez@gmail.com','Diego'),(9,'Martínez','2616990011','paula.martinez@gmail.com','Paula'),(10,'Torres','2616001122','santiago.torres@gmail.com','Santiago');
+/*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `turno`
+--
+
+DROP TABLE IF EXISTS `turno`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `turno` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `fecha_hora` datetime(6) DEFAULT NULL,
+  `ocupado` bit(1) NOT NULL,
+  `doctor_id` bigint(20) NOT NULL,
+  `paciente_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKxnt1jfw8kj4fn4ru08obfrw5` (`doctor_id`),
+  KEY `FKqhwvsf9bqsfmlhd0nurynvwsd` (`paciente_id`),
+  CONSTRAINT `FKqhwvsf9bqsfmlhd0nurynvwsd` FOREIGN KEY (`paciente_id`) REFERENCES `paciente` (`paciente_id`),
+  CONSTRAINT `FKxnt1jfw8kj4fn4ru08obfrw5` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `turno`
+--
+
+LOCK TABLES `turno` WRITE;
+/*!40000 ALTER TABLE `turno` DISABLE KEYS */;
+INSERT INTO `turno` VALUES (1,'2025-11-03 08:00:00.000000',_binary '\0',1,1),(2,'2025-11-03 08:30:00.000000',_binary '',1,2),(3,'2025-11-03 09:00:00.000000',_binary '\0',1,3),(4,'2025-11-03 09:30:00.000000',_binary '',1,4),(5,'2025-11-03 10:00:00.000000',_binary '\0',1,5),(6,'2025-11-03 08:00:00.000000',_binary '',2,6),(7,'2025-11-03 08:30:00.000000',_binary '\0',2,7),(8,'2025-11-03 09:00:00.000000',_binary '',2,8),(9,'2025-11-03 09:30:00.000000',_binary '\0',2,9),(10,'2025-11-03 10:00:00.000000',_binary '\0',2,10),(11,'2025-11-03 09:00:00.000000',_binary '\0',3,1),(12,'2025-11-03 09:30:00.000000',_binary '\0',3,2),(13,'2025-11-03 10:00:00.000000',_binary '\0',3,3),(14,'2025-11-03 10:30:00.000000',_binary '',3,4),(15,'2025-11-03 11:00:00.000000',_binary '\0',3,5),(16,'2025-11-03 09:00:00.000000',_binary '\0',4,6),(17,'2025-11-03 09:30:00.000000',_binary '',4,7),(18,'2025-11-03 10:00:00.000000',_binary '',4,8),(19,'2025-11-03 10:30:00.000000',_binary '\0',4,9),(20,'2025-11-03 11:00:00.000000',_binary '\0',4,10),(21,'2025-11-03 15:00:00.000000',_binary '',5,1),(22,'2025-11-03 15:30:00.000000',_binary '\0',5,2),(23,'2025-11-03 16:00:00.000000',_binary '',5,3),(24,'2025-11-03 16:30:00.000000',_binary '\0',5,4),(25,'2025-11-03 17:00:00.000000',_binary '\0',5,5),(26,'2025-11-03 15:00:00.000000',_binary '\0',6,6),(27,'2025-11-03 15:30:00.000000',_binary '',6,7),(28,'2025-11-03 16:00:00.000000',_binary '',6,8),(29,'2025-11-03 16:30:00.000000',_binary '\0',6,9),(30,'2025-11-03 17:00:00.000000',_binary '\0',6,10),(31,'2025-11-03 16:00:00.000000',_binary '',7,1),(32,'2025-11-03 16:30:00.000000',_binary '\0',7,2),(33,'2025-11-03 17:00:00.000000',_binary '\0',7,3),(34,'2025-11-03 17:30:00.000000',_binary '',7,4),(35,'2025-11-03 18:00:00.000000',_binary '\0',7,5),(36,'2025-11-03 16:00:00.000000',_binary '\0',8,6),(37,'2025-11-03 16:30:00.000000',_binary '',8,7),(38,'2025-11-03 17:00:00.000000',_binary '\0',8,8),(39,'2025-11-03 17:30:00.000000',_binary '',8,9),(40,'2025-11-03 18:00:00.000000',_binary '\0',8,10),(41,'2025-11-03 08:00:00.000000',_binary '\0',9,7),(42,'2025-11-03 08:30:00.000000',_binary '',9,2),(43,'2025-11-03 09:00:00.000000',_binary '\0',9,3),(44,'2025-11-03 09:30:00.000000',_binary '',9,4),(45,'2025-11-03 10:00:00.000000',_binary '\0',9,5),(46,'2025-11-03 09:00:00.000000',_binary '',10,6),(47,'2025-11-03 09:30:00.000000',_binary '',10,5),(48,'2025-11-03 10:00:00.000000',_binary '\0',10,8),(49,'2025-11-03 10:30:00.000000',_binary '',10,9),(50,'2025-11-03 11:00:00.000000',_binary '\0',10,10),(51,'2025-11-04 09:30:00.000000',_binary '',10,5);
+/*!40000 ALTER TABLE `turno` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-11-01 18:50:04

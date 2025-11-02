@@ -51,7 +51,7 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnosPendientes() {
-        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosDesdeFecha().stream().map(this::mapearDTO).toList();
 
         if (listaTurnos.isEmpty()) {
             return List.of(llenarMensajeError("No hay turnos pendientes en la clínica"));
@@ -63,12 +63,11 @@ public class TurnoService implements ITurnoService {
     @Override
     public TurnoDTO asignarTurno(Turno turno) {
         // Obtengo la fecha y hora actual
-        LocalDateTime fechaActual = LocalDateTime.now();
         LocalTime horaInicio = doctorService.getHorarioInicio(turno.getDoctor());
         LocalTime horaFin = doctorService.getHorarioFin(turno.getDoctor());
 
         //Primero busco el primer turno sin ocupar del doctor, puede ser cancelado
-        List<Turno> turnosCancelados = turnoRepo.findTurnosCanceladosPorDoctorDesdeFecha(turno.getDoctor(), fechaActual);
+        List<Turno> turnosCancelados = turnoRepo.findTurnosCanceladosPorDoctorDesdeFecha(turno.getDoctor());
 
         //Si hay turnos cancelados, le asigno a turno, que viene por parámetro con el doctor y el paciente,  el id y fecha/hora
         // del primer turno cancelado de la lista de turnos cancelados
@@ -132,7 +131,7 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoDTO> getTurnosCancelados() {
-        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosCanceladosDesdeFecha(LocalDateTime.now()).stream().map(this::mapearDTO).toList();
+        List<TurnoDTO> listaTurnos = turnoRepo.findTurnosCanceladosDesdeFecha().stream().map(this::mapearDTO).toList();
         if (listaTurnos.isEmpty()) {
             return List.of(llenarMensajeError("No hay turnos cancelados"));
         }
@@ -258,6 +257,8 @@ public class TurnoService implements ITurnoService {
 
     private TurnoDTO llenarMensajeError(String mensajeError) {
         TurnoDTO errorDTO = new TurnoDTO();
+        errorDTO.setId(null);
+        errorDTO.setOcupado(null);
         errorDTO.setMensajeError(mensajeError);
         return errorDTO;
     }

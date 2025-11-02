@@ -28,17 +28,17 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
     //Devuelve todos los turnos pendientes con fecha y hora >= a la actual
     @Query("SELECT t " +
             "FROM Turno t " +
-            "WHERE t.fechaHora >= :fechaActual " +
+            "WHERE t.fechaHora >= CURRENT_TIMESTAMP " +
             "ORDER BY t.fechaHora ASC")
-    List<Turno> findTurnosDesdeFecha(@Param("fechaActual") LocalDateTime fechaActual);
+    List<Turno> findTurnosDesdeFecha();
 
     //Devuelve todos los turnos cancelandos con fecha y hora >= a la actual
     @Query("SELECT t " +
             "FROM Turno t " +
-            "WHERE t.fechaHora >= :fechaActual " +
+            "WHERE t.fechaHora >= CURRENT_TIMESTAMP " +
             "AND t.ocupado = false " +
             "ORDER BY t.fechaHora ASC")
-    List<Turno> findTurnosCanceladosDesdeFecha(@Param("fechaActual") LocalDateTime fechaActual);
+    List<Turno> findTurnosCanceladosDesdeFecha();
 
     //Devuelve todos los turnos asignados a un doctor en particular, filtrando por nombre y apellido del doctor
     @Query("SELECT t " +
@@ -64,11 +64,10 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
     @Query("SELECT t " +
             "FROM Turno t " +
             "WHERE t.doctor = :doctor " +
-            "AND t.fechaHora >= :fechaActual " +
+            "AND t.fechaHora >= CURRENT_TIMESTAMP " +
             "AND t.ocupado = false " +
             "ORDER BY t.fechaHora ASC")
-    List<Turno> findTurnosCanceladosPorDoctorDesdeFecha(@Param("doctor") Doctor doctor,
-                                                        @Param("fechaActual") LocalDateTime fechaActual);
+    List<Turno> findTurnosCanceladosPorDoctorDesdeFecha(@Param("doctor") Doctor doctor);
 //Devuelve un turno si existe en la fecha elegida para un doctor específico
     @Query("SELECT t " +
             "FROM Turno t " +

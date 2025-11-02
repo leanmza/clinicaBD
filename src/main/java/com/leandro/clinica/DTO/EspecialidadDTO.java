@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EspecialidadDTO {
-    private String nombreEspecialidad;
+    private String especialidad;
 }

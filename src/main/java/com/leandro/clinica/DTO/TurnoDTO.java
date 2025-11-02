@@ -14,10 +14,10 @@ import java.time.LocalTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TurnoDTO {
 
-        private long id;
+        private Long id;
         private LocalDate fecha;
         private LocalTime hora;
-        private boolean ocupado;
+        private Boolean ocupado;
         private PacienteDTO paciente;
         private DoctorDTO doctor;
         private String mensajeError;

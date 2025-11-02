@@ -41,6 +41,7 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public void createPaciente(Paciente paciente) {
+        System.out.println(paciente.toString());
         pacienteRepo.save(paciente);
     }
 
