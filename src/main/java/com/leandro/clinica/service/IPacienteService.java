@@ -1,16 +1,16 @@
 package com.leandro.clinica.service;
 
 
-import com.leandro.clinica.DTO.PacienteDTO;
+import com.leandro.clinica.DTO.PacienteResponseDTO;
 import com.leandro.clinica.model.Paciente;
 
 import java.util.List;
 
 public interface IPacienteService {
 
-    List<PacienteDTO> getPacientes();
+    List<PacienteResponseDTO> getPacientes();
 
-    PacienteDTO getPacienteById(long id);
+    PacienteResponseDTO getPacienteById(long id);
 
     void createPaciente(Paciente paciente);
 

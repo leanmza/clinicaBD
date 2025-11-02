@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PacienteDTO {
+public class PacienteResponseDTO {
     private Long id;
     private String nombre;
     private String apellido;
@@ -17,3 +17,7 @@ public class PacienteDTO {
     private String email;
     private String mensajeError;
 }
+
+
+
+

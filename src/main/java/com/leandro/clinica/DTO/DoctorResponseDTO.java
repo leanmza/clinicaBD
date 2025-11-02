@@ -1,8 +1,6 @@
 package com.leandro.clinica.DTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DoctorDTO {
+public class DoctorResponseDTO {
     private Long id;
     private String nombre;
     private String apellido;
@@ -24,3 +22,7 @@ public class DoctorDTO {
     private String horaFin;
     private String mensajeError;
 }
+
+
+
+

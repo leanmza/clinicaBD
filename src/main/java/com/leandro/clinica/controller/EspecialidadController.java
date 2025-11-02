@@ -1,7 +1,6 @@
 package com.leandro.clinica.controller;
 
-import com.leandro.clinica.DTO.EspecialidadDTO;
-import com.leandro.clinica.model.Especialidad;
+import com.leandro.clinica.DTO.EspecialidadResponseDTO;
 import com.leandro.clinica.service.IEspecialidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,7 @@ public class EspecialidadController {
     @Autowired
     private IEspecialidadService especialidadService;
     @GetMapping()
-    public List<EspecialidadDTO> getEspecialidades(){
+    public List<EspecialidadResponseDTO> getEspecialidades(){
         return especialidadService.getEspecialidades();
     }
 }
