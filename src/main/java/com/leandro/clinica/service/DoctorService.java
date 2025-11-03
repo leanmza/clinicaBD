@@ -45,12 +45,16 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public void createDoctor(Doctor doctor) {
+
+
         Especialidad especialidad = especialidadService.getEspecialidadByName(doctor.getEspecialidad().getNombre());
         if (especialidad != null) {
             doctor.setEspecialidad(especialidad);
         }
         doctorRepo.save(doctor);
     }
+
+
 
     @Override
     public void deleteDoctor(long id) {

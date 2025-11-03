@@ -27,7 +27,6 @@ public class PacienteService implements IPacienteService {
         return listaPacientes;
     }
 
-
     @Override
     public PacienteDTO getPacienteById(long id) {
         PacienteDTO pacienteDTO = pacienteRepo.findById(id).map(this::mapearDTO).orElse(null);
