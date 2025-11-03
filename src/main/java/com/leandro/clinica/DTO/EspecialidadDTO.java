@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EspecialidadResponseDTO {
+public class EspecialidadDTO {
     private String especialidad;
 }
 

@@ -1,6 +1,6 @@
 package com.leandro.clinica.controller;
 
-import com.leandro.clinica.DTO.DoctorResponseDTO;
+import com.leandro.clinica.DTO.DoctorDTO;
 import com.leandro.clinica.model.Doctor;
 import com.leandro.clinica.service.IDoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +10,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/doctor")
+@CrossOrigin(origins = "http://127.0.0.1:5500/")
+
 public class DoctorController {
     @Autowired
     private IDoctorService doctorService;
 
     @GetMapping
-    public List<DoctorResponseDTO> getDoctores(){
+    public List<DoctorDTO> getDoctores(){
         return doctorService.getDoctores();
     }
 
     @GetMapping("/{id}")
-    public DoctorResponseDTO getDoctorById(@PathVariable long id){
+    public DoctorDTO getDoctorById(@PathVariable long id){
         return doctorService.getDoctorById(id);
     }
 

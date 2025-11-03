@@ -88,6 +88,11 @@ h2 {
     font-size: 1.8em;
 }
 
+h3 {
+    color: #333;
+    margin: 30px 0 15px 0;
+}
+
 /* FILTROS */
 .filter-buttons {
     display: flex;
@@ -260,6 +265,16 @@ h2 {
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
+.btn-link {
+    background: none;
+    border: none;
+    color: #667eea;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.btn-link.danger { color: #f44336; }
+
 /* TABS */
 .tabs {
     display: flex;
@@ -295,6 +310,17 @@ h2 {
 
 .tab-content.active {
     display: block;
+}
+
+.inline {
+    display: flex;
+    gap: 10px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
 }
 
 /* MENSAJES */
@@ -360,6 +386,32 @@ h2 {
     font-size: 60px;
     margin-bottom: 20px;
 }
+
+/* TABLAS */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.data-table th {
+    background: #f7f7ff;
+    color: #444;
+}
+
+.list-actions { margin-top: 10px; }
 
 
 

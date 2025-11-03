@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DoctorResponseDTO {
+public class DoctorDTO {
     private Long id;
     private String nombre;
     private String apellido;

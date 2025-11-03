@@ -1,6 +1,6 @@
 package com.leandro.clinica.controller;
 
-import com.leandro.clinica.DTO.TurnoResponseDTO;
+import com.leandro.clinica.DTO.TurnoDTO;
 import com.leandro.clinica.model.Turno;
 import com.leandro.clinica.service.ITurnoService;
 import jakarta.validation.Valid;
@@ -11,52 +11,53 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/turno")
+@CrossOrigin(origins = "http://127.0.0.1:5500/")
 public class TurnoController {
 
     @Autowired
     private ITurnoService turnoService;
 
     @GetMapping
-    public List<TurnoResponseDTO> getTurnos() {
+    public List<TurnoDTO> getTurnos() {
         return turnoService.getTurnos();
     }
 
     @GetMapping("{id}")
-    public TurnoResponseDTO getTurnoById(@PathVariable long id) {
+    public TurnoDTO getTurnoById(@PathVariable long id) {
         return turnoService.getTurnoById(id);
     }
 
     @GetMapping("/pendientes")
-    public List<TurnoResponseDTO> getTurnosPendientes() {
+    public List<TurnoDTO> getTurnosPendientes() {
         return turnoService.getTurnosPendientes();
     }
 
     @GetMapping("/cancelados")
-    public List<TurnoResponseDTO> getTurnosCancelados() {
+    public List<TurnoDTO> getTurnosCancelados() {
         return turnoService.getTurnosCancelados();
 
     }
 
     @GetMapping("/doctor")
-    public List<TurnoResponseDTO> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
+    public List<TurnoDTO> getTurnosByNombreYApellidoDoctor(@RequestParam @Valid String nombre,
                                                            @RequestParam @Valid String apellido) {
         return turnoService.getTurnosByNombreDoctor(nombre, apellido);
     }
 
     @GetMapping("/paciente")
-    public List<TurnoResponseDTO> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
+    public List<TurnoDTO> getTurnosByNombreYApellidoPaciente(@RequestParam @Valid String nombre,
                                                              @RequestParam @Valid String apellido) {
         return turnoService.getTurnosByNombrePaciente(nombre, apellido);
     }
 
     @PostMapping("/asignar")
-    public TurnoResponseDTO asignarTurno(@RequestBody Turno turno) {
-        TurnoResponseDTO turnoAsignado = turnoService.asignarTurno(turno);
+    public TurnoDTO asignarTurno(@RequestBody Turno turno) {
+        TurnoDTO turnoAsignado = turnoService.asignarTurno(turno);
         return turnoAsignado;
     }
 
     @PostMapping("/reservar")
-    public TurnoResponseDTO reservarTurno(@RequestBody Turno turno) {
+    public TurnoDTO reservarTurno(@RequestBody Turno turno) {
         return turnoService.reservarTurno(turno);
     }
 

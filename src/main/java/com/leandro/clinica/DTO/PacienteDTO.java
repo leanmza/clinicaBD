@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PacienteResponseDTO {
+public class PacienteDTO {
     private Long id;
     private String nombre;
     private String apellido;

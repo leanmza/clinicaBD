@@ -1,26 +1,26 @@
 package com.leandro.clinica.service;
 
-import com.leandro.clinica.DTO.TurnoResponseDTO;
+import com.leandro.clinica.DTO.TurnoDTO;
 import com.leandro.clinica.model.Turno;
 
 import java.util.List;
 
 public interface ITurnoService {
-    TurnoResponseDTO asignarTurno(Turno turno);
+    TurnoDTO asignarTurno(Turno turno);
 
-    List<TurnoResponseDTO> getTurnos();
+    List<TurnoDTO> getTurnos();
 
-    TurnoResponseDTO getTurnoById(long id);
+    TurnoDTO getTurnoById(long id);
 
-    List<TurnoResponseDTO> getTurnosPendientes();
+    List<TurnoDTO> getTurnosPendientes();
 
-    List<TurnoResponseDTO> getTurnosByNombreDoctor(String nombre, String apellido);
+    List<TurnoDTO> getTurnosByNombreDoctor(String nombre, String apellido);
 
-    List<TurnoResponseDTO> getTurnosByNombrePaciente(String nombre, String apellido);
+    List<TurnoDTO> getTurnosByNombrePaciente(String nombre, String apellido);
 
     void deleteTurno(long id);
 
-    List<TurnoResponseDTO> getTurnosCancelados();
+    List<TurnoDTO> getTurnosCancelados();
 
-    TurnoResponseDTO reservarTurno(Turno turno);
+    TurnoDTO reservarTurno(Turno turno);
 }

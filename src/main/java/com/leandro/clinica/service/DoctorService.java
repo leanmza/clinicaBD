@@ -1,6 +1,6 @@
 package com.leandro.clinica.service;
 
-import com.leandro.clinica.DTO.DoctorResponseDTO;
+import com.leandro.clinica.DTO.DoctorDTO;
 import com.leandro.clinica.model.Doctor;
 import com.leandro.clinica.model.Especialidad;
 import com.leandro.clinica.model.Horarios;
@@ -25,8 +25,8 @@ public class DoctorService implements IDoctorService {
     private HorariosService horariosService;
 
     @Override
-    public List<DoctorResponseDTO> getDoctores() {
-        List<DoctorResponseDTO> listaDoctores = doctorRepo.findAll().stream().map(this::mapearDTO).toList();
+    public List<DoctorDTO> getDoctores() {
+        List<DoctorDTO> listaDoctores = doctorRepo.findAll().stream().map(this::mapearDTO).toList();
 
         if(listaDoctores.isEmpty()){
             return List.of(llenarMensajeError("No hay doctores registrados"));
@@ -35,8 +35,8 @@ public class DoctorService implements IDoctorService {
     }
 
     @Override
-    public DoctorResponseDTO getDoctorById(long id) {
-        DoctorResponseDTO doctorDTO = doctorRepo.findById(id).map(this::mapearDTO).orElse(null);
+    public DoctorDTO getDoctorById(long id) {
+        DoctorDTO doctorDTO = doctorRepo.findById(id).map(this::mapearDTO).orElse(null);
 
         if (doctorDTO == null){
             return llenarMensajeError("El doctor no existe");
@@ -46,6 +46,8 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public void createDoctor(Doctor doctor) {
+
+
         Especialidad especialidad = especialidadService.getEspecialidadByName(doctor.getEspecialidad().getNombre());
         if (especialidad != null) {
             doctor.setEspecialidad(especialidad);
@@ -61,6 +63,8 @@ public class DoctorService implements IDoctorService {
         }
         doctorRepo.save(doctor);
     }
+
+
 
     @Override
     public void deleteDoctor(long id) {
@@ -109,8 +113,8 @@ public class DoctorService implements IDoctorService {
     }
 
 
-    private DoctorResponseDTO mapearDTO(Doctor doctor) {
-        DoctorResponseDTO doctorDTO = new DoctorResponseDTO();
+    private DoctorDTO mapearDTO(Doctor doctor) {
+        DoctorDTO doctorDTO = new DoctorDTO();
         doctorDTO.setId(doctor.getId());
         doctorDTO.setNombre(doctor.getNombre());
         doctorDTO.setApellido(doctor.getApellido());
@@ -123,8 +127,8 @@ public class DoctorService implements IDoctorService {
         return doctorDTO;
     }
 
-    private DoctorResponseDTO llenarMensajeError(String mensajeError) {
-        DoctorResponseDTO errorDTO = new DoctorResponseDTO();
+    private DoctorDTO llenarMensajeError(String mensajeError) {
+        DoctorDTO errorDTO = new DoctorDTO();
         errorDTO.setMensajeError(mensajeError);
         return errorDTO;
     }
