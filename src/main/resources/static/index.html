@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Clínica</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🏥 Sistema de Gestión de Clínica</h1>
+        <nav>
+          <button class="nav-btn active" onclick="showSection('dashboard')">
+            Dashboard
+          </button>
+          <button class="nav-btn" onclick="showSection('pacientes')">
+            Pacientes
+          </button>
+          <button class="nav-btn" onclick="showSection('doctores')">
+            Doctores
+          </button>
+          <button class="nav-btn" onclick="showSection('turnos')">
+            Turnos
+          </button>
+        </nav>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+        <h2>Dashboard de Turnos</h2>
+        <div class="filter-buttons">
+          <button
+            class="filter-btn active"
+            onclick="filtrarTurnos('todos', event)"
+          >
+            Todos los Turnos
+          </button>
+          <button
+            class="filter-btn"
+            onclick="filtrarTurnos('pendientes', event)"
+          >
+            Turnos Pendientes
+          </button>
+          <button
+            class="filter-btn"
+            onclick="filtrarTurnos('cancelados', event)"
+          >
+            Turnos Cancelados
+          </button>
+        </div>
+        <div id="turnosList" class="turnos-grid"></div>
+      </section>
+
+      <!-- PACIENTES -->
+      <section id="pacientes" class="section">
+        <h2>Pacientes</h2>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="showTab('pacientes-registrar')">Registrar</button>
+          <button class="tab-btn" onclick="showTab('pacientes-lista')">Listado</button>
+        </div>
+
+        <div id="pacientes-registrar" class="tab-content active">
+          <h3>Registro de Paciente</h3>
+          <form id="formPaciente" class="form">
+            <div class="form-group">
+              <label>Nombre:</label>
+              <input type="text" id="pacienteNombre" required />
+            </div>
+            <div class="form-group">
+              <label>Apellido:</label>
+              <input type="text" id="pacienteApellido" required />
+            </div>
+            <div class="form-group">
+              <label>Email:</label>
+              <input type="email" id="pacienteEmail" required />
+            </div>
+            <div class="form-group">
+              <label>Celular (10 dígitos):</label>
+              <input
+                type="text"
+                id="pacienteCelular"
+                pattern="\d{10}"
+                maxlength="10"
+                required
+              />
+            </div>
+            <button type="submit" class="btn-submit">Registrar Paciente</button>
+          </form>
+          <div id="mensajePaciente" class="mensaje"></div>
+        </div>
+
+        <div id="pacientes-lista" class="tab-content">
+          <h3>Listado de Pacientes</h3>
+          <div class="list-actions">
+            <button class="btn-submit" type="button" onclick="cargarPacientesTabla()">Cargar Pacientes</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Email</th>
+                  <th>Celular</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="pacientesTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOCTORES -->
+      <section id="doctores" class="section">
+        <h2>Doctores</h2>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="showTab('doctores-registrar')">Registrar</button>
+          <button class="tab-btn" onclick="showTab('doctores-lista')">Listado</button>
+        </div>
+
+        <div id="doctores-registrar" class="tab-content active">
+          <h3>Registro de Doctor</h3>
+          <form id="formDoctor" class="form">
+            <div class="form-group">
+              <label>Nombre:</label>
+              <input type="text" id="doctorNombre" required />
+            </div>
+            <div class="form-group">
+              <label>Apellido:</label>
+              <input type="text" id="doctorApellido" required />
+            </div>
+            <div class="form-group">
+              <label>Email:</label>
+              <input type="email" id="doctorEmail" required />
+            </div>
+            <div class="form-group">
+              <label>Celular (10 dígitos):</label>
+              <input
+                type="text"
+                id="doctorCelular"
+                pattern="\d{10}"
+                maxlength="10"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Especialidad:</label>
+              <input type="text" id="doctorEspecialidad" required />
+            </div>
+            <div class="form-group">
+              <label>Hora de inicio:</label>
+              <input type="time" id="horaInicio" required />
+            </div>
+            <div class="form-group">
+              <label>Hora de fin:</label>
+              <input type="time" id="horaFin" required />
+            </div>
+            <button type="submit" class="btn-submit">Registrar Doctor</button>
+          </form>
+          <div id="mensajeDoctor" class="mensaje"></div>
+        </div>
+
+        <div id="doctores-lista" class="tab-content">
+          <h3>Listado de Doctores</h3>
+          <div class="list-actions">
+            <button class="btn-submit" type="button" onclick="cargarDoctoresTabla()">Cargar Doctores</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Email</th>
+                  <th>Celular</th>
+                  <th>Especialidad</th>
+                  <th>Horario</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="doctoresTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TURNOS -->
+      <section id="turnos" class="section">
+        <h2>Asignar Turno</h2>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="showTab('asignar')">
+            Asignar Automático
+          </button>
+          <button class="tab-btn" onclick="showTab('reservar')">
+            Reservar Fecha Específica
+          </button>
+          <button class="tab-btn" onclick="showTab('buscar')">
+            Buscar Turnos
+          </button>
+        </div>
+
+        <!-- ASIGNAR AUTOMÁTICO -->
+        <div id="asignar" class="tab-content active">
+          <form id="formAsignarTurno" class="form">
+            <div class="form-group">
+              <label>Paciente:</label>
+              <select id="turnoAsignarPaciente" required>
+                <option value="">Seleccione un paciente</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Doctor:</label>
+              <select id="turnoAsignarDoctor" required>
+                <option value="">Seleccione un doctor</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-submit">
+              Asignar Turno Automático
+            </button>
+          </form>
+          <div id="mensajeAsignar" class="mensaje"></div>
+        </div>
+
+        <!-- RESERVAR FECHA -->
+        <div id="reservar" class="tab-content">
+          <form id="formReservarTurno" class="form">
+            <div class="form-group">
+              <label>Paciente:</label>
+              <select id="turnoReservarPaciente" required>
+                <option value="">Seleccione un paciente</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Doctor:</label>
+              <select id="turnoReservarDoctor" required>
+                <option value="">Seleccione un doctor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Fecha y Hora:</label>
+              <input type="datetime-local" id="turnoFechaHora" required />
+            </div>
+            <button type="submit" class="btn-submit">Reservar Turno</button>
+          </form>
+          <div id="mensajeReservar" class="mensaje"></div>
+        </div>
+
+        <!-- BUSCAR TURNOS -->
+        <div id="buscar" class="tab-content">
+          <h3>Búsquedas de Turnos</h3>
+          <div class="form grid-3">
+            <div class="form-group">
+              <label>Turno por ID</label>
+              <div class="inline">
+                <input type="number" id="buscarTurnoId" placeholder="ID" />
+                <button type="button" class="btn-submit" onclick="buscarTurnoPorId()">Buscar</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Turnos por Doctor</label>
+              <div class="inline">
+                <input type="text" id="buscarDoctorNombre" placeholder="Nombre" />
+                <input type="text" id="buscarDoctorApellido" placeholder="Apellido" />
+                <button type="button" class="btn-submit" onclick="buscarTurnosPorDoctor()">Buscar</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Turnos por Paciente</label>
+              <div class="inline">
+                <input type="text" id="buscarPacienteNombre" placeholder="Nombre" />
+                <input type="text" id="buscarPacienteApellido" placeholder="Apellido" />
+                <button type="button" class="btn-submit" onclick="buscarTurnosPorPaciente()">Buscar</button>
+              </div>
+            </div>
+          </div>
+          <div id="turnosBusquedaResultados" class="turnos-grid" style="margin-top: 20px;"></div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>

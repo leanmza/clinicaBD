@@ -1,5 +1,6 @@
 package com.leandro.clinica.service;
 
+
 import com.leandro.clinica.DTO.EspecialidadDTO;
 import com.leandro.clinica.model.Especialidad;
 import com.leandro.clinica.repository.IEspecialidadRepository;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EspecialidadService implements IEspecialidadService {

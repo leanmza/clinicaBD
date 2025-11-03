@@ -1,7 +1,6 @@
 package com.leandro.clinica.controller;
 
 import com.leandro.clinica.DTO.EspecialidadDTO;
-import com.leandro.clinica.model.Especialidad;
 import com.leandro.clinica.service.IEspecialidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

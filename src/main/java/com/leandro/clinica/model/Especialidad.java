@@ -1,13 +1,12 @@
 package com.leandro.clinica.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -22,5 +21,6 @@ public class Especialidad {
 
     @Column(name ="nombre_especialidad",unique = true)
     @Size(max = 50)
+    @NotNull
     private String nombre;
 }
