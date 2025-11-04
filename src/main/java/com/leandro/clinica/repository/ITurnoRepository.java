@@ -22,7 +22,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
     //Devuelve la última fecha y hora ocupada de un doctor en particular
     @Query("SELECT MAX(t.fechaHora) " +
             "FROM Turno t " +
-            "WHERE t.doctor = :doctor")
+            "WHERE t.doctor = :doctor " +
+            "AND t.fechaHora >= CURRENT_TIMESTAMP")
     LocalDateTime findUltimaFechaTurnoByDoctor(@Param("doctor") Doctor doctor);
 
     //Devuelve todos los turnos pendientes con fecha y hora >= a la actual

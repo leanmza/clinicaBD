@@ -93,6 +93,7 @@ public class TurnoService implements ITurnoService {
 
             // Si ultimaFecha es null, busco el primer horario libre del día siguiente;
             if (ultimaFecha == null) {
+                System.out.println(ultimaFecha);
                 ultimaFecha = primerTurnoDelProximoDía(horaInicio, horaFin);
             }
 
@@ -173,6 +174,9 @@ public class TurnoService implements ITurnoService {
 
         //Saco la lista de fecha y hora de la lista de turnos
         List<LocalDateTime> listaFechas = listaTurnos.stream().map(Turno::getFechaHora).toList();
+        for (LocalDateTime listaFecha : listaFechas) {
+
+        }
         LocalDateTime fechaCandidata;
 
 

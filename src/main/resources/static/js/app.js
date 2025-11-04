@@ -9,33 +9,40 @@ let doctores = [];
 function crearFilaPaciente(p) {
   return `
     <tr>
-      <td>${p.id ?? ''}</td>
-      <td>${p.nombre ?? ''}</td>
-      <td>${p.apellido ?? ''}</td>
-      <td>${p.email ?? ''}</td>
-      <td>${p.celular ?? ''}</td>
+      <td>${p.id ?? ""}</td>
+      <td>${p.nombre ?? ""}</td>
+      <td>${p.apellido ?? ""}</td>
+      <td>${p.email ?? ""}</td>
+      <td>${p.celular ?? ""}</td>
       <td>
-        <button class="btn-link" onclick="editarPaciente(${p.id})">Editar</button>
-        <button class="btn-link danger" onclick="eliminarPaciente(${p.id})">Eliminar</button>
+        <button class="btn-link" onclick="editarPaciente(${
+          p.id
+        })">Editar</button>
+        <button class="btn-link danger" onclick="eliminarPaciente(${
+          p.id
+        })">Eliminar</button>
       </td>
     </tr>
   `;
 }
 
 function crearFilaDoctor(d) {
-  const horario = d.horaInicio && d.horaFin ? `${d.horaInicio} - ${d.horaFin}` : '';
+  const horario =
+    d.horaInicio && d.horaFin ? `${d.horaInicio} - ${d.horaFin}` : "";
   return `
     <tr>
-      <td>${d.id ?? ''}</td>
-      <td>${d.nombre ?? ''}</td>
-      <td>${d.apellido ?? ''}</td>
-      <td>${d.email ?? ''}</td>
-      <td>${d.celular ?? ''}</td>
-      <td>${d.especialidad ?? ''}</td>
+      <td>${d.id ?? ""}</td>
+      <td>${d.nombre ?? ""}</td>
+      <td>${d.apellido ?? ""}</td>
+      <td>${d.email ?? ""}</td>
+      <td>${d.celular ?? ""}</td>
+      <td>${d.especialidad ?? ""}</td>
       <td>${horario}</td>
       <td>
         <button class="btn-link" onclick="editarDoctor(${d.id})">Editar</button>
-        <button class="btn-link danger" onclick="eliminarDoctor(${d.id})">Eliminar</button>
+        <button class="btn-link danger" onclick="eliminarDoctor(${
+          d.id
+        })">Eliminar</button>
       </td>
     </tr>
   `;
@@ -544,7 +551,8 @@ async function cancelarTurno(id) {
 async function buscarTurnoPorId() {
   const id = document.getElementById("buscarTurnoId").value;
   const cont = document.getElementById("turnosBusquedaResultados");
-  if (!id) return (cont.innerHTML = '<div class="empty-state">Ingrese un ID</div>');
+  if (!id)
+    return (cont.innerHTML = '<div class="empty-state">Ingrese un ID</div>');
   cont.innerHTML = '<div class="loading">Buscando...</div>';
   try {
     const res = await fetch(`${API_URL}/turno/${id}`);
@@ -560,40 +568,55 @@ async function buscarTurnoPorId() {
 }
 
 async function buscarTurnosPorDoctor() {
-  const nombre = document.getElementById("buscarDoctorNombre").value || '';
-  const apellido = document.getElementById("buscarDoctorApellido").value || '';
+  const nombre = document.getElementById("buscarDoctorNombre").value || "";
+  const apellido = document.getElementById("buscarDoctorApellido").value || "";
   const cont = document.getElementById("turnosBusquedaResultados");
-  if (!nombre && !apellido) return (cont.innerHTML = '<div class="empty-state">Complete nombre y/o apellido</div>');
+  if (!nombre && !apellido)
+    return (cont.innerHTML =
+      '<div class="empty-state">Complete nombre y/o apellido</div>');
   cont.innerHTML = '<div class="loading">Buscando...</div>';
   try {
-    const url = `${API_URL}/turno/doctor?nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}`;
+    const url = `${API_URL}/turno/doctor?nombre=${encodeURIComponent(
+      nombre
+    )}&apellido=${encodeURIComponent(apellido)}`;
     const res = await fetch(url);
     const arr = await res.json();
     if (!arr || arr.length === 0 || (arr[0] && arr[0].mensajeError)) {
       cont.innerHTML = '<div class="empty-state">Sin resultados</div>';
       return;
     }
-    cont.innerHTML = arr.filter(t => t && t.id).map(crearTurnoCard).join("");
+    cont.innerHTML = arr
+      .filter((t) => t && t.id)
+      .map(crearTurnoCard)
+      .join("");
   } catch (e) {
     cont.innerHTML = '<div class="empty-state">Error de conexión</div>';
   }
 }
 
 async function buscarTurnosPorPaciente() {
-  const nombre = document.getElementById("buscarPacienteNombre").value || '';
-  const apellido = document.getElementById("buscarPacienteApellido").value || '';
+  const nombre = document.getElementById("buscarPacienteNombre").value || "";
+  const apellido =
+    document.getElementById("buscarPacienteApellido").value || "";
   const cont = document.getElementById("turnosBusquedaResultados");
-  if (!nombre && !apellido) return (cont.innerHTML = '<div class="empty-state">Complete nombre y/o apellido</div>');
+  if (!nombre && !apellido)
+    return (cont.innerHTML =
+      '<div class="empty-state">Complete nombre y/o apellido</div>');
   cont.innerHTML = '<div class="loading">Buscando...</div>';
   try {
-    const url = `${API_URL}/turno/paciente?nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}`;
+    const url = `${API_URL}/turno/paciente?nombre=${encodeURIComponent(
+      nombre
+    )}&apellido=${encodeURIComponent(apellido)}`;
     const res = await fetch(url);
     const arr = await res.json();
     if (!arr || arr.length === 0 || (arr[0] && arr[0].mensajeError)) {
       cont.innerHTML = '<div class="empty-state">Sin resultados</div>';
       return;
     }
-    cont.innerHTML = arr.filter(t => t && t.id).map(crearTurnoCard).join("");
+    cont.innerHTML = arr
+      .filter((t) => t && t.id)
+      .map(crearTurnoCard)
+      .join("");
   } catch (e) {
     cont.innerHTML = '<div class="empty-state">Error de conexión</div>';
   }
