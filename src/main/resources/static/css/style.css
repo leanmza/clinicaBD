@@ -121,99 +121,6 @@ h3 {
     border-color: #667eea;
 }
 
-/* TURNOS GRID */
-.turnos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.turno-card {
-    background: white;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 20px;
-    transition: all 0.3s ease;
-}
-
-.turno-card:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
-}
-
-.turno-card.ocupado {
-    border-left: 5px solid #4caf50;
-}
-
-.turno-card.cancelado {
-    border-left: 5px solid #f44336;
-    opacity: 0.7;
-}
-
-.turno-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.turno-id {
-    font-weight: bold;
-    color: #667eea;
-}
-
-.turno-estado {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.turno-estado.ocupado {
-    background: #4caf50;
-    color: white;
-}
-
-.turno-estado.cancelado {
-    background: #f44336;
-    color: white;
-}
-
-.turno-info {
-    margin: 10px 0;
-}
-
-.turno-info p {
-    margin: 5px 0;
-    color: #555;
-}
-
-.turno-info strong {
-    color: #333;
-}
-
-.btn-cancelar {
-    width: 100%;
-    background: #f44336;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-}
-
-.btn-cancelar:hover {
-    background: #d32f2f;
-}
-
-.btn-cancelar:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
 /* FORMULARIOS */
 .form {
     max-width: 600px;
@@ -360,32 +267,8 @@ h3 {
     header h1 {
         font-size: 1.5em;
     }
-
-    .turnos-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
-/* LOADING */
-.loading {
-    text-align: center;
-    padding: 40px;
-    color: #667eea;
-    font-size: 18px;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #999;
-}
-
-.empty-state::before {
-    content: "📋";
-    display: block;
-    font-size: 60px;
-    margin-bottom: 20px;
-}
 
 /* TABLAS */
 .table-wrapper {
@@ -413,6 +296,36 @@ h3 {
 
 .list-actions { margin-top: 10px; }
 
+/* BADGES DE ESTADO */
+.badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
 
+.badge.estado-ocupado {
+    background: #4caf50;
+    color: white;
+}
 
+.badge.estado-cancelado {
+    background: #f44336;
+    color: white;
+}
+
+/* FILAS DE TURNOS */
+.fila-cancelada {
+    opacity: 0.6;
+    background-color: #f5f5f5;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f0f0ff;
+}
+
+.data-table tbody tr.fila-cancelada:hover {
+    background-color: #e8e8e8;
+}
 

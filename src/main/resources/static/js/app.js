@@ -48,6 +48,30 @@ function crearFilaDoctor(d) {
   `;
 }
 
+function crearFilaTurno(turno) {
+  const estadoTexto = turno.ocupado ? "Ocupado" : "Cancelado";
+  const estadoClass = turno.ocupado ? "estado-ocupado" : "estado-cancelado";
+  const btnDisabled = !turno.ocupado ? "disabled" : "";
+  const btnTexto = turno.ocupado ? "Cancelar" : "Cancelado";
+  
+  return `
+    <tr class="${turno.ocupado ? '' : 'fila-cancelada'}">
+      <td>${turno.id}</td>
+      <td>${turno.fecha}</td>
+      <td>${turno.hora}</td>
+      <td>Dr. ${turno.doctor.nombre} ${turno.doctor.apellido}</td>
+      <td>${turno.doctor.especialidad}</td>
+      <td>${turno.paciente.nombre} ${turno.paciente.apellido}</td>
+      <td><span class="badge ${estadoClass}">${estadoTexto}</span></td>
+      <td>
+        <button class="btn-link danger" onclick="cancelarTurno(${turno.id})" ${btnDisabled}>
+          ${btnTexto}
+        </button>
+      </td>
+    </tr>
+  `;
+}
+
 // NAVEGACIÓN
 function showSection(sectionId) {
   // Ocultar todas las secciones
@@ -441,7 +465,7 @@ document
 // ========== DASHBOARD DE TURNOS ==========
 async function filtrarTurnos(tipo, event) {
   const turnosList = document.getElementById("turnosList");
-  turnosList.innerHTML = '<div class="loading">Cargando turnos...</div>';
+  turnosList.innerHTML = '<tr><td colspan="8">Cargando turnos...</td></tr>';
 
   // Actualizar botones activos sólo si viene desde un click
   if (event && event.target && event.target.classList) {
@@ -474,52 +498,20 @@ async function filtrarTurnos(tipo, event) {
       (turnos[0] && turnos[0].mensajeError)
     ) {
       turnosList.innerHTML =
-        '<div class="empty-state">No hay turnos para mostrar</div>';
+        '<tr><td colspan="8" style="text-align: center; padding: 40px;">No hay turnos para mostrar</td></tr>';
       return;
     }
 
     turnosList.innerHTML = "";
     turnos.forEach((turno) => {
       if (turno.id) {
-        turnosList.innerHTML += crearTurnoCard(turno);
+        turnosList.innerHTML += crearFilaTurno(turno);
       }
     });
   } catch (error) {
     turnosList.innerHTML =
-      '<div class="empty-state">Error al cargar turnos</div>';
+      '<tr><td colspan="8" style="text-align: center; padding: 40px;">Error al cargar turnos</td></tr>';
   }
-}
-
-function crearTurnoCard(turno) {
-  const estado = turno.ocupado ? "ocupado" : "cancelado";
-  const estadoTexto = turno.ocupado ? "Ocupado" : "Cancelado";
-
-  return `
-        <div class="turno-card ${estado}">
-            <div class="turno-header">
-                <span class="turno-id">Turno #${turno.id}</span>
-                <span class="turno-estado ${estado}">${estadoTexto}</span>
-            </div>
-            <div class="turno-info">
-                <p><strong>📅 Fecha:</strong> ${turno.fecha}</p>
-                <p><strong>🕐 Hora:</strong> ${turno.hora}</p>
-                <p><strong>👨‍⚕️ Doctor:</strong> Dr. ${turno.doctor.nombre} ${
-    turno.doctor.apellido
-  }</p>
-                <p><strong>📋 Especialidad:</strong> ${
-                  turno.doctor.especialidad
-                }</p>
-                <p><strong>👤 Paciente:</strong> ${turno.paciente.nombre} ${
-    turno.paciente.apellido
-  }</p>
-            </div>
-            <button class="btn-cancelar" onclick="cancelarTurno(${turno.id})" ${
-    !turno.ocupado ? "disabled" : ""
-  }>
-                ${turno.ocupado ? "Cancelar Turno" : "Ya Cancelado"}
-            </button>
-        </div>
-    `;
 }
 
 async function cancelarTurno(id) {
@@ -552,18 +544,18 @@ async function buscarTurnoPorId() {
   const id = document.getElementById("buscarTurnoId").value;
   const cont = document.getElementById("turnosBusquedaResultados");
   if (!id)
-    return (cont.innerHTML = '<div class="empty-state">Ingrese un ID</div>');
-  cont.innerHTML = '<div class="loading">Buscando...</div>';
+    return (cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Ingrese un ID</td></tr>');
+  cont.innerHTML = '<tr><td colspan="8" style="text-align: center;">Buscando...</td></tr>';
   try {
     const res = await fetch(`${API_URL}/turno/${id}`);
     const t = await res.json();
     if (!t || t.mensajeError || !t.id) {
-      cont.innerHTML = '<div class="empty-state">No encontrado</div>';
+      cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No encontrado</td></tr>';
       return;
     }
-    cont.innerHTML = crearTurnoCard(t);
+    cont.innerHTML = crearFilaTurno(t);
   } catch (e) {
-    cont.innerHTML = '<div class="empty-state">Error de conexión</div>';
+    cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Error de conexión</td></tr>';
   }
 }
 
@@ -573,8 +565,8 @@ async function buscarTurnosPorDoctor() {
   const cont = document.getElementById("turnosBusquedaResultados");
   if (!nombre && !apellido)
     return (cont.innerHTML =
-      '<div class="empty-state">Complete nombre y/o apellido</div>');
-  cont.innerHTML = '<div class="loading">Buscando...</div>';
+      '<tr><td colspan="8" style="text-align: center; padding: 20px;">Complete nombre y/o apellido</td></tr>');
+  cont.innerHTML = '<tr><td colspan="8" style="text-align: center;">Buscando...</td></tr>';
   try {
     const url = `${API_URL}/turno/doctor?nombre=${encodeURIComponent(
       nombre
@@ -582,15 +574,15 @@ async function buscarTurnosPorDoctor() {
     const res = await fetch(url);
     const arr = await res.json();
     if (!arr || arr.length === 0 || (arr[0] && arr[0].mensajeError)) {
-      cont.innerHTML = '<div class="empty-state">Sin resultados</div>';
+      cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Sin resultados</td></tr>';
       return;
     }
     cont.innerHTML = arr
       .filter((t) => t && t.id)
-      .map(crearTurnoCard)
+      .map(crearFilaTurno)
       .join("");
   } catch (e) {
-    cont.innerHTML = '<div class="empty-state">Error de conexión</div>';
+    cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Error de conexión</td></tr>';
   }
 }
 
@@ -601,8 +593,8 @@ async function buscarTurnosPorPaciente() {
   const cont = document.getElementById("turnosBusquedaResultados");
   if (!nombre && !apellido)
     return (cont.innerHTML =
-      '<div class="empty-state">Complete nombre y/o apellido</div>');
-  cont.innerHTML = '<div class="loading">Buscando...</div>';
+      '<tr><td colspan="8" style="text-align: center; padding: 20px;">Complete nombre y/o apellido</td></tr>');
+  cont.innerHTML = '<tr><td colspan="8" style="text-align: center;">Buscando...</td></tr>';
   try {
     const url = `${API_URL}/turno/paciente?nombre=${encodeURIComponent(
       nombre
@@ -610,15 +602,15 @@ async function buscarTurnosPorPaciente() {
     const res = await fetch(url);
     const arr = await res.json();
     if (!arr || arr.length === 0 || (arr[0] && arr[0].mensajeError)) {
-      cont.innerHTML = '<div class="empty-state">Sin resultados</div>';
+      cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Sin resultados</td></tr>';
       return;
     }
     cont.innerHTML = arr
       .filter((t) => t && t.id)
-      .map(crearTurnoCard)
+      .map(crearFilaTurno)
       .join("");
   } catch (e) {
-    cont.innerHTML = '<div class="empty-state">Error de conexión</div>';
+    cont.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Error de conexión</td></tr>';
   }
 }
 

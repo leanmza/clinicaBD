@@ -50,7 +50,23 @@
             Turnos Cancelados
           </button>
         </div>
-        <div id="turnosList" class="turnos-grid"></div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Doctor</th>
+                <th>Especialidad</th>
+                <th>Paciente</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="turnosList"></tbody>
+          </table>
+        </div>
       </section>
 
       <!-- PACIENTES -->
@@ -278,7 +294,23 @@
               </div>
             </div>
           </div>
-          <div id="turnosBusquedaResultados" class="turnos-grid" style="margin-top: 20px;"></div>
+          <div class="table-wrapper" style="margin-top: 20px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Doctor</th>
+                  <th>Especialidad</th>
+                  <th>Paciente</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="turnosBusquedaResultados"></tbody>
+            </table>
+          </div>
         </div>
       </section>
     </div>
