@@ -18,11 +18,5 @@ public interface IPacienteService {
 
     void updatePaciente(long id, Paciente paciente);
 
-
-
-
-
-
-
 }
 

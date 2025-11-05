@@ -35,7 +35,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/paciente/1",
+							"raw": "http://localhost:8080/api/paciente/11",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -44,7 +44,7 @@
 							"path": [
 								"api",
 								"paciente",
-								"1"
+								"11"
 							]
 						}
 					},
@@ -144,7 +144,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"nombre\":\"Leandro\",\r\n\"apellido\": \"Hidalgo\",\r\n\"celular\": 2615555555,\r\n\"email\":\"test@gmail.com\"}",
+							"raw": "{\"nombre\":\"Leandro Maximiliano\",\r\n\"apellido\": \"Hidalgo\",\r\n\"celular\": 2615555555,\r\n\"email\":\"test_hidalgo@gmail.com\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -152,7 +152,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/paciente/1",
+							"raw": "http://localhost:8080/api/paciente/11",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -161,7 +161,7 @@
 							"path": [
 								"api",
 								"paciente",
-								"1"
+								"11"
 							]
 						}
 					},
@@ -251,7 +251,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nombre\": \"Test\",\r\n  \"apellido\": \"Test\",\r\n  \"email\": \"test.perez@clinica.com\",\r\n  \"celular\": \"261500000\",\r\n  \"especialidad\": {\r\n    \"nombre\": \"Odontología General\"\r\n  },\r\n  \"horarios\": {\r\n    \"horaInicio\": \"10:00:00\",\r\n    \"horaFin\": \"20:00:00\"\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"nombre\": \"Test\",\r\n  \"apellido\": \"Test\",\r\n  \"email\": \"test.perez@clinica.com\",\r\n  \"celular\": \"261500000\",\r\n  \"especialidad\": {\r\n    \"nombre\": \"Odontología General\"\r\n  },\r\n  \"horarios\": {\r\n    \"horaInicio\": \"10:00:00\",\r\n    \"horaFin\": \"15:00:00\"\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -341,7 +341,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/turno/1",
+							"raw": "http://localhost:8080/api/turno/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -350,7 +350,7 @@
 							"path": [
 								"api",
 								"turno",
-								"1"
+								"10"
 							]
 						}
 					},
@@ -445,7 +445,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/turno/5",
+							"raw": "http://localhost:8080/api/turno/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -454,7 +454,7 @@
 							"path": [
 								"api",
 								"turno",
-								"5"
+								"2"
 							]
 						}
 					},
@@ -494,7 +494,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"paciente\":{\"id\":5},\r\n    \"doctor\":{\"id\":10},\r\n     \"fechaHora\": \"2025-11-13T16:30:00\"\r\n}",
+							"raw": "{\r\n    \"paciente\":{\"id\":5},\r\n    \"doctor\":{\"id\":10},\r\n     \"fechaHora\": \"2025-11-04T09:30:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,6 +512,31 @@
 								"api",
 								"turno",
 								"reservar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "especialidad",
+			"item": [
+				{
+					"name": "get especialidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/especialidades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"especialidades"
 							]
 						}
 					},

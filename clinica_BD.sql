@@ -26,10 +26,10 @@ DROP TABLE IF EXISTS `doctor`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `doctor` (
   `doctor_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `apellido` varchar(255) DEFAULT NULL,
-  `celular` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `nombre` varchar(255) DEFAULT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `celular` varchar(15) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
   `especialidad_id` bigint(20) NOT NULL,
   `horarios_id` bigint(20) NOT NULL,
   PRIMARY KEY (`doctor_id`),
@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS `especialidad`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `especialidad` (
   `especialidad_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `nombre_especialidad` varchar(255) DEFAULT NULL,
+  `nombre_especialidad` varchar(50) NOT NULL,
   PRIMARY KEY (`especialidad_id`),
   UNIQUE KEY `UK370cq5j57aunndshju3f1fa2y` (`nombre_especialidad`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -84,8 +84,8 @@ DROP TABLE IF EXISTS `horarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `horarios` (
   `horarios_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `hora_fin` time(6) DEFAULT NULL,
-  `hora_inicio` time(6) DEFAULT NULL,
+  `hora_fin` time(6) NOT NULL,
+  `hora_inicio` time(6) NOT NULL,
   PRIMARY KEY (`horarios_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -109,10 +109,10 @@ DROP TABLE IF EXISTS `paciente`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `paciente` (
   `paciente_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `apellido` varchar(255) DEFAULT NULL,
-  `celular` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `nombre` varchar(255) DEFAULT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `celular` varchar(15) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
   PRIMARY KEY (`paciente_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -136,7 +136,7 @@ DROP TABLE IF EXISTS `turno`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `turno` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fecha_hora` datetime(6) DEFAULT NULL,
+  `fecha_hora` datetime(6) NOT NULL,
   `ocupado` bit(1) NOT NULL,
   `doctor_id` bigint(20) NOT NULL,
   `paciente_id` bigint(20) NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE `turno` (
   KEY `FKqhwvsf9bqsfmlhd0nurynvwsd` (`paciente_id`),
   CONSTRAINT `FKqhwvsf9bqsfmlhd0nurynvwsd` FOREIGN KEY (`paciente_id`) REFERENCES `paciente` (`paciente_id`),
   CONSTRAINT `FKxnt1jfw8kj4fn4ru08obfrw5` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `turno` (
 
 LOCK TABLES `turno` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
-INSERT INTO `turno` VALUES (1,'2025-11-03 08:00:00.000000',_binary '\0',1,1),(2,'2025-11-03 08:30:00.000000',_binary '',1,2),(3,'2025-11-03 09:00:00.000000',_binary '\0',1,3),(4,'2025-11-03 09:30:00.000000',_binary '',1,4),(5,'2025-11-03 10:00:00.000000',_binary '\0',1,5),(6,'2025-11-03 08:00:00.000000',_binary '',2,6),(7,'2025-11-03 08:30:00.000000',_binary '\0',2,7),(8,'2025-11-03 09:00:00.000000',_binary '',2,8),(9,'2025-11-03 09:30:00.000000',_binary '\0',2,9),(10,'2025-11-03 10:00:00.000000',_binary '\0',2,10),(11,'2025-11-03 09:00:00.000000',_binary '\0',3,1),(12,'2025-11-03 09:30:00.000000',_binary '\0',3,2),(13,'2025-11-03 10:00:00.000000',_binary '\0',3,3),(14,'2025-11-03 10:30:00.000000',_binary '',3,4),(15,'2025-11-03 11:00:00.000000',_binary '\0',3,5),(16,'2025-11-03 09:00:00.000000',_binary '\0',4,6),(17,'2025-11-03 09:30:00.000000',_binary '',4,7),(18,'2025-11-03 10:00:00.000000',_binary '',4,8),(19,'2025-11-03 10:30:00.000000',_binary '\0',4,9),(20,'2025-11-03 11:00:00.000000',_binary '\0',4,10),(21,'2025-11-03 15:00:00.000000',_binary '',5,1),(22,'2025-11-03 15:30:00.000000',_binary '\0',5,2),(23,'2025-11-03 16:00:00.000000',_binary '',5,3),(24,'2025-11-03 16:30:00.000000',_binary '\0',5,4),(25,'2025-11-03 17:00:00.000000',_binary '\0',5,5),(26,'2025-11-03 15:00:00.000000',_binary '\0',6,6),(27,'2025-11-03 15:30:00.000000',_binary '',6,7),(28,'2025-11-03 16:00:00.000000',_binary '',6,8),(29,'2025-11-03 16:30:00.000000',_binary '\0',6,9),(30,'2025-11-03 17:00:00.000000',_binary '\0',6,10),(31,'2025-11-03 16:00:00.000000',_binary '',7,1),(32,'2025-11-03 16:30:00.000000',_binary '\0',7,2),(33,'2025-11-03 17:00:00.000000',_binary '\0',7,3),(34,'2025-11-03 17:30:00.000000',_binary '',7,4),(35,'2025-11-03 18:00:00.000000',_binary '\0',7,5),(36,'2025-11-03 16:00:00.000000',_binary '\0',8,6),(37,'2025-11-03 16:30:00.000000',_binary '',8,7),(38,'2025-11-03 17:00:00.000000',_binary '\0',8,8),(39,'2025-11-03 17:30:00.000000',_binary '',8,9),(40,'2025-11-03 18:00:00.000000',_binary '\0',8,10),(41,'2025-11-03 08:00:00.000000',_binary '\0',9,7),(42,'2025-11-03 08:30:00.000000',_binary '',9,2),(43,'2025-11-03 09:00:00.000000',_binary '\0',9,3),(44,'2025-11-03 09:30:00.000000',_binary '',9,4),(45,'2025-11-03 10:00:00.000000',_binary '\0',9,5),(46,'2025-11-03 09:00:00.000000',_binary '',10,6),(47,'2025-11-03 09:30:00.000000',_binary '',10,5),(48,'2025-11-03 10:00:00.000000',_binary '\0',10,8),(49,'2025-11-03 10:30:00.000000',_binary '',10,9),(50,'2025-11-03 11:00:00.000000',_binary '\0',10,10),(51,'2025-11-04 09:30:00.000000',_binary '',10,5);
+INSERT INTO `turno` VALUES (1,'2025-11-03 08:00:00.000000',_binary '\0',1,1),(2,'2025-11-03 08:30:00.000000',_binary '',1,2),(3,'2025-11-03 09:00:00.000000',_binary '\0',1,3),(4,'2025-11-03 09:30:00.000000',_binary '',1,4),(5,'2025-11-03 10:00:00.000000',_binary '\0',1,5),(6,'2025-11-03 08:00:00.000000',_binary '',2,6),(7,'2025-11-03 08:30:00.000000',_binary '\0',2,7),(8,'2025-11-03 09:00:00.000000',_binary '',2,8),(9,'2025-11-03 09:30:00.000000',_binary '\0',2,9),(10,'2025-11-03 10:00:00.000000',_binary '\0',2,10),(11,'2025-11-03 09:00:00.000000',_binary '',3,1),(12,'2025-11-03 09:30:00.000000',_binary '\0',3,2),(13,'2025-11-03 10:00:00.000000',_binary '\0',3,3),(14,'2025-11-03 10:30:00.000000',_binary '',3,4),(15,'2025-11-03 11:00:00.000000',_binary '\0',3,5),(16,'2025-11-03 09:00:00.000000',_binary '\0',4,6),(17,'2025-11-03 09:30:00.000000',_binary '',4,7),(18,'2025-11-03 10:00:00.000000',_binary '',4,8),(19,'2025-11-03 10:30:00.000000',_binary '\0',4,9),(20,'2025-11-03 11:00:00.000000',_binary '\0',4,10),(21,'2025-11-03 15:00:00.000000',_binary '',5,1),(22,'2025-11-03 15:30:00.000000',_binary '\0',5,2),(23,'2025-11-03 16:00:00.000000',_binary '',5,3),(24,'2025-11-03 16:30:00.000000',_binary '\0',5,4),(25,'2025-11-03 17:00:00.000000',_binary '\0',5,5),(26,'2025-11-03 15:00:00.000000',_binary '\0',6,6),(27,'2025-11-03 15:30:00.000000',_binary '',6,7),(28,'2025-11-03 16:00:00.000000',_binary '',6,8),(29,'2025-11-03 16:30:00.000000',_binary '\0',6,9),(30,'2025-11-03 17:00:00.000000',_binary '\0',6,10),(31,'2025-11-03 16:00:00.000000',_binary '',7,1),(32,'2025-11-03 16:30:00.000000',_binary '\0',7,2),(33,'2025-11-03 17:00:00.000000',_binary '\0',7,3),(34,'2025-11-03 17:30:00.000000',_binary '',7,4),(35,'2025-11-03 18:00:00.000000',_binary '\0',7,5),(36,'2025-11-03 16:00:00.000000',_binary '\0',8,6),(37,'2025-11-03 16:30:00.000000',_binary '',8,7),(38,'2025-11-03 17:00:00.000000',_binary '\0',8,8),(39,'2025-11-03 17:30:00.000000',_binary '',8,9),(40,'2025-11-03 18:00:00.000000',_binary '\0',8,10),(41,'2025-11-03 08:00:00.000000',_binary '\0',9,7),(42,'2025-11-03 08:30:00.000000',_binary '',9,2),(43,'2025-11-03 09:00:00.000000',_binary '\0',9,3),(44,'2025-11-03 09:30:00.000000',_binary '',9,4),(45,'2025-11-03 10:00:00.000000',_binary '\0',9,5),(46,'2025-11-03 09:00:00.000000',_binary '',10,6),(47,'2025-11-03 09:30:00.000000',_binary '\0',10,7),(48,'2025-11-03 10:00:00.000000',_binary '\0',10,8),(49,'2025-11-03 10:30:00.000000',_binary '',10,9),(50,'2025-11-03 11:00:00.000000',_binary '\0',10,10),(51,'2025-11-07 08:00:00.000000',_binary '',1,1),(52,'2025-11-07 08:30:00.000000',_binary '',1,2),(53,'2025-11-07 09:00:00.000000',_binary '\0',1,3),(54,'2025-11-07 09:30:00.000000',_binary '',1,4),(55,'2025-11-07 10:00:00.000000',_binary '\0',1,5),(56,'2025-11-07 08:00:00.000000',_binary '',2,6),(57,'2025-11-07 08:30:00.000000',_binary '',2,7),(58,'2025-11-07 09:00:00.000000',_binary '',2,8),(59,'2025-11-07 09:30:00.000000',_binary '',2,9),(60,'2025-11-07 10:00:00.000000',_binary '\0',2,10),(61,'2025-11-07 09:00:00.000000',_binary '',3,1),(62,'2025-11-07 09:30:00.000000',_binary '',3,2),(63,'2025-11-07 10:00:00.000000',_binary '',3,3),(64,'2025-11-07 10:30:00.000000',_binary '',3,4),(65,'2025-11-07 11:00:00.000000',_binary '',3,5),(66,'2025-11-07 09:00:00.000000',_binary '',4,6),(67,'2025-11-07 09:30:00.000000',_binary '',4,7),(68,'2025-11-07 10:00:00.000000',_binary '',4,8),(69,'2025-11-07 10:30:00.000000',_binary '',4,9),(70,'2025-11-07 11:00:00.000000',_binary '',4,10),(71,'2025-11-07 15:00:00.000000',_binary '',5,1),(72,'2025-11-07 15:30:00.000000',_binary '',5,2),(73,'2025-11-07 16:00:00.000000',_binary '',5,3),(74,'2025-11-07 16:30:00.000000',_binary '',5,4),(75,'2025-11-07 17:00:00.000000',_binary '',5,5),(76,'2025-11-07 15:00:00.000000',_binary '',6,6),(77,'2025-11-07 15:30:00.000000',_binary '',6,7),(78,'2025-11-07 16:00:00.000000',_binary '',6,8),(79,'2025-11-07 16:30:00.000000',_binary '\0',6,9),(80,'2025-11-07 17:00:00.000000',_binary '',6,10),(81,'2025-11-07 16:00:00.000000',_binary '',7,1),(82,'2025-11-07 16:30:00.000000',_binary '',7,2),(83,'2025-11-07 17:00:00.000000',_binary '',7,3),(84,'2025-11-07 17:30:00.000000',_binary '',7,4),(85,'2025-11-07 18:00:00.000000',_binary '',7,5),(86,'2025-11-07 16:00:00.000000',_binary '',8,6),(87,'2025-11-07 16:30:00.000000',_binary '',8,7),(88,'2025-11-07 17:00:00.000000',_binary '',8,8),(89,'2025-11-07 17:30:00.000000',_binary '',8,9),(90,'2025-11-07 18:00:00.000000',_binary '',8,10),(91,'2025-11-07 08:00:00.000000',_binary '',9,7),(92,'2025-11-07 08:30:00.000000',_binary '',9,2),(93,'2025-11-07 09:00:00.000000',_binary '',9,3),(94,'2025-11-07 09:30:00.000000',_binary '',9,4),(95,'2025-11-07 10:00:00.000000',_binary '',9,5),(96,'2025-11-07 09:00:00.000000',_binary '',10,6),(97,'2025-11-07 09:30:00.000000',_binary '\0',10,7),(98,'2025-11-07 10:00:00.000000',_binary '\0',10,8),(99,'2025-11-07 10:30:00.000000',_binary '',10,9),(100,'2025-11-07 11:00:00.000000',_binary '\0',10,10);
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -167,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-01 18:50:04
+-- Dump completed on 2025-11-05 16:06:26
