@@ -98,6 +98,11 @@ function showSection(sectionId) {
   if (sectionId === "dashboard") {
     filtrarTurnos("todos");
   }
+
+  // Si es notificaciones, cargar estadísticas
+  if (sectionId === "notificaciones") {
+    cargarEstadisticasNotificaciones();
+  }
 }
 
 // TABS
@@ -623,6 +628,78 @@ function mostrarMensaje(elementoId, texto, tipo) {
   setTimeout(() => {
     mensaje.className = "mensaje";
   }, 5000);
+}
+
+// ========== NOTIFICACIONES ==========
+async function cargarEstadisticasNotificaciones() {
+  try {
+    const res = await fetch(`${API_URL}/notificaciones/estadisticas`);
+    const stats = await res.json();
+
+    if (stats.error) {
+      console.error("Error:", stats.error);
+      return;
+    }
+
+    // Actualizar estadísticas en la UI
+    document.getElementById("statTurnosManana").textContent =
+      stats.turnosManana || 0;
+
+    if (stats.fechaManana) {
+      const fecha = new Date(stats.fechaManana);
+      document.getElementById("statFechaManana").textContent =
+        fecha.toLocaleDateString("es-AR");
+    }
+  } catch (error) {
+    console.error("Error al cargar estadísticas:", error);
+  }
+}
+
+async function enviarNotificacionesManual() {
+  const boton = event.target;
+  const mensajeDiv = document.getElementById("notifResultado");
+
+  // Confirmar acción
+  if (
+    !confirm(
+      "¿Está seguro que desea enviar las notificaciones ahora?\n\nSe enviarán emails a todos los pacientes con turnos para mañana."
+    )
+  ) {
+    return;
+  }
+
+  // Deshabilitar botón y mostrar loading
+  boton.disabled = true;
+  boton.textContent = "Enviando...";
+  mensajeDiv.textContent = "Procesando...";
+  mensajeDiv.className = "mensaje";
+
+  try {
+    const res = await fetch(`${API_URL}/notificaciones/enviar-ahora`, {
+      method: "POST",
+    });
+    const resultado = await res.json();
+
+    if (resultado.mensajeError) {
+      mensajeDiv.textContent = resultado.mensajeError;
+      mensajeDiv.className = "mensaje error";
+    } else if (resultado.exitosos === 0 && resultado.total === 0) {
+      mensajeDiv.textContent = resultado.mensaje;
+      mensajeDiv.className = "mensaje";
+    } else {
+      mensajeDiv.textContent = `✅ ${resultado.mensaje}\n\n📧 Emails enviados: ${resultado.exitosos} de ${resultado.total}\n⏰ Fecha: ${new Date().toLocaleString("es-AR")}`;
+      mensajeDiv.className = "mensaje exito";
+
+      // Recargar estadísticas
+      cargarEstadisticasNotificaciones();
+    }
+  } catch (error) {
+    mensajeDiv.textContent = "Error de conexión: " + error.message;
+    mensajeDiv.className = "mensaje error";
+  } finally {
+    boton.disabled = false;
+    boton.textContent = "Enviar Notificaciones Ahora";
+  }
 }
 
 // ========== INICIALIZACIÓN ==========

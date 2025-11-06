@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.print.Doc;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -85,5 +84,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
             "AND t.fechaHora >= CURRENT_TIMESTAMP " +
             "ORDER BY t.fechaHora ASC")
     List<Turno> findTurnosPorDoctor(@Param("doctor") Doctor doctor);
+
+    //Devuelve todos los turnos ocupados entre dos fechas (para notificaciones)
+    List<Turno> findTurnosByFechaHoraBetweenAndOcupadoTrue(LocalDateTime inicio, LocalDateTime fin);
 
 }

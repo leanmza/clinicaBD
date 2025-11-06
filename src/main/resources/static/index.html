@@ -23,6 +23,9 @@
           <button class="nav-btn" onclick="showSection('turnos')">
             Turnos
           </button>
+          <button class="nav-btn" onclick="showSection('notificaciones')">
+            📧 Notificaciones
+          </button>
         </nav>
       </header>
 
@@ -311,6 +314,58 @@
               <tbody id="turnosBusquedaResultados"></tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <!-- NOTIFICACIONES -->
+      <section id="notificaciones" class="section">
+        <h2>📧 Sistema de Notificaciones</h2>
+
+        <div class="notif-info-card">
+          <h3>ℹ️ Información del Sistema</h3>
+          <ul>
+            <li>✅ Envío automático: Todos los días a las 9:00 AM</li>
+            <li>📅 Recordatorio: 24 horas antes del turno</li>
+            <li>📧 Email: clinica.turnos.2025@gmail.com</li>
+          </ul>
+        </div>
+
+        <div class="notif-stats">
+          <h3>📊 Estadísticas</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="statTurnosManana">-</div>
+              <div class="stat-label">Turnos para mañana</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="statFechaManana">-</div>
+              <div class="stat-label">Fecha de envío</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">
+                <span class="status-badge active">🟢 Activo</span>
+              </div>
+              <div class="stat-label">Estado del sistema</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notif-actions">
+          <h3>🚀 Acciones Manuales</h3>
+          <div class="action-card">
+            <p><strong>Enviar notificaciones ahora</strong></p>
+            <p>Envía emails de recordatorio a todos los pacientes con turnos para mañana</p>
+            <button class="btn-submit" onclick="enviarNotificacionesManual()">
+              Enviar Notificaciones Ahora
+            </button>
+          </div>
+        </div>
+
+        <div id="notifResultado" class="mensaje"></div>
+
+        <div class="notif-info">
+          <h3>💡 ¿Cómo funciona?</h3>
+          <p>El sistema revisa automáticamente todos los días a las 9:00 AM qué turnos están programados para el día siguiente y envía un email de recordatorio a cada paciente con la información completa de su cita.</p>
         </div>
       </section>
     </div>
