@@ -96,7 +96,7 @@ function showSection(sectionId) {
 
   // Si es dashboard, cargar todos los turnos
   if (sectionId === "dashboard") {
-    filtrarTurnos("todos");
+    filtrarTurnos("pendientes");
   }
 
   // Si es notificaciones, cargar estadísticas
@@ -705,5 +705,5 @@ async function enviarNotificacionesManual() {
 // ========== INICIALIZACIÓN ==========
 window.addEventListener("DOMContentLoaded", () => {
   // Cargar turnos al iniciar
-  filtrarTurnos("todos");
+  filtrarTurnos("pendientes");
 });
